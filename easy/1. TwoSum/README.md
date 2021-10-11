@@ -5,7 +5,7 @@
 
 
 
-人生中的第一个Topic，写<vector>都忘记要包含#include了。我好蠢啊！
+人生中的第一个Topic，写vector都忘记要包含#include了。我好蠢啊！
 
 也许是太久没有触碰C++了吧！题目不难，关键我才faster that 28.66%，这些人都是啥怪物啊？
 
