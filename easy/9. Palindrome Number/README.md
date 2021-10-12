@@ -5,7 +5,7 @@
 
 
 
-不亏是Easy啊！真Easy~！突然发现我刷Leetcode看不懂题目，怎么办啊！！！！！！！！
+不亏是Easy啊！真Easy~！突然发现我刷Leetcode看不懂题目，怎么办啊！！！！！！！！！
 
 Runtime: 19 ms, faster than 15.43% of Java online submissions for Palindrome Number.
 
