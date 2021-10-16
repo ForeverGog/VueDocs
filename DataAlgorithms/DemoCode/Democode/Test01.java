@@ -1,3 +1,5 @@
+package Democode;
+
 public class Test01{
 
     public static void process1(){
