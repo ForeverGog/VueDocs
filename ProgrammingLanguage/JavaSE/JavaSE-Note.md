@@ -5042,3 +5042,92 @@ public class Demo{
     }
 }
 ```
+
+## 自然排序Comparable的使用
+
+- 存储Student对象并且遍历，创建TreeSet集合使用无参构造方法
+- 按照年龄从小到大排序，年龄相同时，按照名字字母的顺序排序
+- 用TreeSet集合存储自定义对象，无参构造方法使用的是自然排序对元素进行排序的
+- 自然排序，就是让元素所属的类实现Comparable接口，重写comparaTo(T o)方法
+- 重写方法时，一定注意排序规则必须按照要求的主要条件和次要条件来写。
+
+```java
+public class Student implements Comparable<Student> {
+    private String name;
+    private int age;
+
+    public Student () {
+    }
+
+    public Student (String name ,int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName () {
+        return name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
+
+    public int getAge () {
+        return age;
+    }
+
+    public void setAge (int age) {
+        this.age = age;
+    }
+
+    //重写接口
+
+    @Override
+    public int compareTo (Student s) {
+        //return 0;只能输出1个，因为要对比，Student类型没法对比
+        //return 1;按照输入的顺序排序
+        //return -1;同上，反过来的
+
+        //按照年龄从小到大排序，年龄相同时，按照名字字母的顺序排序
+
+        int num = this.age - s.age;//从小到大
+//        int num = s.age - this.age; 从大到小
+
+        //按照名字字母的顺序排序
+        int num2 = num==0?this.name.compareTo (s.name):num;
+        //return num;
+        return num2;
+
+    }
+}
+```
+
+```java
+import java.util.TreeSet;
+
+public class TreeSetDemo {
+    public static void main (String[] args) {
+        //创建集合对象
+        TreeSet<Student> ts = new TreeSet<Student> ();
+        //创建Student对象
+        Student s1 = new Student ("马牛逼",19);
+        Student s2 = new Student ("我的",20);
+        Student s3 = new Student ("打是的",23);
+        Student s4 = new Student ("是是",22);
+        Student s5 = new Student ("是三大",20);//输出不了，因为年龄相同，除非对名字也进行比较
+        Student s6 = new Student ("是是",22);//输出不了，因为TreeSet的元素唯一性
+
+        ts.add (s1);
+        ts.add (s2);
+        ts.add (s3);
+        ts.add (s4);
+        ts.add (s5);
+        ts.add (s6);
+        //遍历
+        for(Student s : ts){
+            System.out.println (s.getName ()+s.getAge ());
+        }
+
+    }
+}
+```
