@@ -5457,3 +5457,209 @@ public class GenericDemo {
       }
   }
   ```
+
+## 可变参数的使用
+
+Arrays工具类中有一个静态方法：
+
+- public static <T> List <T> asList(T...a)：返回由指定数组支持的固定大小的列表
+- 返回的集合不能增删操作，可以修改操作
+
+List接口中有一个静态方法：
+
+- public static <E>List<E> of(E...elements)：返回包含任意数量元素的不可变表
+- 返回的集合不能增删改操作
+
+Set接口中有一个静态方法：
+
+- public static <E>Set<E> of(E...elements)：返回一个包含任意数量元素的不可变集合
+- 在给元素的时候，不能给重复的元素
+- 返回类集合不能做自身操作，没有修改的方法
+
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
+public class Demo {
+    public static void main (String[] args) {
+
+        System.out.println ("------------------------------------------");
+//        List<String> list = Arrays.asList ("hello" ,"world" ,"java");
+//        System.out.println (list);
+////        list.add ("javaee");不能使用添加和删除，因为会修改大小
+////        list.remove ("world");不能使用添加和删除，因为会修改大小
+//        list.set (1,"javaee");可以改
+        System.out.println ("------------------------------------------");
+//        - public static <E>List<E> of(E...elements)：返回包含任意数量元素的不可变表
+//        List<String> list = List.of ("hello" ,"world" ,"java","world");//List集合可以有重复元素
+//        System.out.println (list);
+        ////        list.add ("javaee");不能使用添加和删除，因为会修改大小
+        ////        list.remove ("world");不能使用添加和删除，因为会修改大小
+        ////        list.set (1,"javaee");增删改都不行
+        System.out.println ("------------------------------------------");
+        //        - public static <T> List <T> asList(T...a)：返回由指定数组支持的固定大小的列表
+        Set<String> set = Set.of ("hello" ,"world" ,"java");//不能重复元素
+        System.out.println (set);
+//        set.add ("javaee");不能添加
+//        set.remove ("java");//不能删除
+        
+    }
+}
+```
+
+# Map
+
+## Map集合概述和特点
+
+- Interface Map<K,V> K：键的类型；V：值的类型
+- 将键映射到值的对象；不能包含重复的键；每个键最多映射一个值
+
+创建Map集合的对象
+
+- 多态的方式
+- 具体的实现类HashMap
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class Demo {
+    public static void main (String[] args) {
+        //创建集合对象
+        Map<String,String> map = new HashMap<String,String> ();
+        map.put ("sb","马牛逼");
+        map.put ("2b","黑手");
+        map.put ("独立sb","虎哥");
+        System.out.println (map);
+    }
+}
+```
+
+## Map集合的基本功能
+
+- V put(K key,V value) 添加元素
+- V remove(Object Key) 移除元素
+- void clear() 清空所有的键值对元素
+- boolean containsKey(Object Key) 判断集合是否包含指定的键
+- boolean containsValue(Object Key) 判断集合是否包含指定的值
+- boolean isEmpty() 判断集合是否为空
+- int size() 集合的长度，也就是元素的个数
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class Demo {
+    public static void main (String[] args) {
+        Map<String,String> map = new HashMap<String,String> ();
+
+        map.put ("我是马牛逼","asdsa");
+        map.remove ("我是马牛逼");
+        map.clear ();
+        map.containsKey ("我是马牛逼");
+        map.containsValue ("我是马牛逼");
+        map.isEmpty ();
+        map.size ();
+        
+    }
+}
+```
+
+## Map集合的获取功能
+
+- V get(Obejct key) 根据键 获取值
+- Set<K> keySet() 获取所有键的集合
+- Collection<V> values() 获取所有值的集合
+- Set<Map.Entry<K,V>>entrySet() 获取所有键值对对象的集合
+
+```java
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+public class Demo {
+    public static void main (String[] args) {
+        Map<String,String> map = new HashMap<String,String> ();
+        map.put ("sss","ss1");
+        map.put ("ssss","ss2");
+        map.put ("sssss","ss3");
+
+//        System.out.println (map.get ("sss"));
+
+//        Set<String> keySet = map.keySet ();
+//        for(String key : keySet){
+//            System.out.println (key);
+//        }
+
+        Collection<String> values = map.values ();
+        for(String value:values){
+            System.out.println (value);
+        }
+    }
+}
+```
+
+## Map集合的遍历-方式一
+
+- 获取所有Key的值，用KeySet()方法实现
+- 遍历Key的集合，获取到每一个Key，用增强for实现
+- 根据key去查找，用get(Object key)实现
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+public class Demo {
+    public static void main (String[] args) {
+        Map<String,String> map = new HashMap<String,String> ();
+        map.put ("sss","ss1");
+        map.put ("ssss","ss2");
+        map.put ("sssss","ss3");
+
+        //获取所有Key的值，用KeySet()方法实现
+        Set<String> keySet = map.keySet ();
+        for(String key : keySet){
+            //根据key去查找，用get(Object key)实现
+            String s = map.get (key);
+            System.out.println (key+","+s);
+        }
+    }
+}
+```
+
+## Map集合的遍历-方式二
+
+- 获取所有Key值对对象的集合
+  - Set<Map.Entry<K,V>>entrySet()：获取所有Key对对象的集合
+- 用增强for获得每一个Map.Entry
+- 根据Key值的对象获得Key和Value
+  - 用getKey()获得Key
+  - 用getValue()获得Value
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+public class Demo {
+    public static void main (String[] args) {
+        Map<String,String> map = new HashMap<String,String> ();
+        map.put ("sss","ss1");
+        map.put ("ssss","ss2");
+        map.put ("sssss","ss3");
+
+        //获取所有键值对象集合
+        Set<Map.Entry<String, String>> entrySet = map.entrySet ();
+        //得到每一个Key对对象
+        for(Map.Entry<String,String> me : entrySet) {
+            //根据Key值对对象获取Key和Value
+            String key = me.getKey ();
+            String value = me.getValue ();
+            System.out.println (key+","+value);
+        }
+    }
+}
+```
