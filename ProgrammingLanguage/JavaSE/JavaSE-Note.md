@@ -5131,3 +5131,329 @@ public class TreeSetDemo {
     }
 }
 ```
+
+## 比较器排序Comparator的使用
+
+- 存储学生对象并且遍历，创建TreeSet集合使用带参构造方法
+- 要求：按年龄从小到大排序，年龄相同时，按照姓名的字母顺序排序
+- 用TreeSet集合存储自定义对象，带参构造方法使用的是比较器排序对元素进行排序的。
+- 比较器排序，就是让集合构造方法接收Comparator的实现类对象，重写compare（T o1，T o2）方法
+- 重写方法时候，一定要注意排序规则必须按照要求的主要条件和次要条件来写
+
+```java
+import java.util.Comparator;
+import java.util.TreeSet;
+
+public class Demo {
+    public static void main (String[] args) {
+        //创建集合对象
+        TreeSet<Student> s = new TreeSet<Student> (new Comparator<Student> () {
+            @Override
+            public int compare (Student s1 ,Student s2) {
+                //this.age - s.age
+                //s1 = this
+                //s2 = s
+                int num = s1.getAge () - s2.getAge ();
+                int num2 = num==0?s1.getName ().compareTo (s2.getName ()):num;
+                return num2;
+            }
+        });
+
+        for (Student student : s) {
+            System.out.println (student.getName ()+student.getAge ());
+        }
+    }
+}
+```
+
+# 泛型
+
+## 泛型概述和好处
+
+泛型：是JDK5中引入的新特性，它提供了编译时类型安全检测机制，该机制允许在编译时检测到非法类型。
+
+它的本质是参数化类型。也就是说所操作的数据类型被指定为一个参数
+
+将类型由原来的具体的类型参数化，然后在使用/调用的时候传入具体的类型
+
+这种参数类型可以用在类，方法和接口中，分别被称为泛型类、泛型方法、泛型接口
+
+- <类型>：指定一种类型的格式，这里的类型可以看成形参
+
+- <类型1,类型2……>：指定多种类型的格式，多种类型之间用逗号隔开，这里的类型可以看成形参
+
+- 将来具体调用的时候给定的类型可以看成实参，并且实参的类型只能是引用数据类型
+
+- 好处：把运行期间的问题提前到了编译期间，避免了强制类型转化
+
+  ```java
+  import java.util.ArrayList;
+  import java.util.Collection;
+  import java.util.Iterator;
+  
+  public class Demo {
+      public static void main (String[] args) {
+  
+          //创建集合对象
+  //        Collection cl = new ArrayList ();
+          Collection<String> cl = new ArrayList<String> ();
+          //添加元素
+          cl.add ("hello");
+          cl.add ("world");
+          cl.add ("java");
+  //        cl.add (100);
+          //遍历集合
+  //        Iterator iterator = cl.iterator ();
+          Iterator<String> iterator = cl.iterator ();
+  
+          while(iterator.hasNext ()){
+  //            Object next = iterator.next ();
+  //            System.out.println (next);
+  //            String s = (String) iterator.next ();//ClassCastException
+              String next = iterator.next ();
+              System.out.println (next);
+          }
+      }
+  }
+  ```
+
+## 泛型类
+
+泛型类定义格式
+
+- 格式：修饰符class 类名<类型>{ }
+- 例如：public class Generic<T> { }
+- 此处的T可以随便写，常见如T/E/K/V等形式通常表示泛型
+
+```java
+public class Student {
+    String name;
+
+    public String getName () {
+        return name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
+}
+```
+
+```java
+public class Teacher {
+
+    private Integer age;
+
+    public Integer getAge () {
+        return age;
+    }
+
+    public void setAge (Integer age) {
+        this.age = age;
+    }
+}
+```
+
+```java
+public class Teacher {
+
+    private Integer age;
+
+    public Integer getAge () {
+        return age;
+    }
+
+    public void setAge (Integer age) {
+        this.age = age;
+    }
+}
+```
+
+```java
+public class Demo {
+    public static void main (String[] args) {
+        Student s = new Student ();
+        s.setName ("学生");
+        System.out.println (s.getName ());
+        Teacher t = new Teacher ();
+        t.setAge (30);
+//        t.setAge ("30");
+        System.out.println (t.getAge ());
+        System.out.println ("--------");
+        Generic<String> g1 = new Generic<String> ();
+        g1.setT ("马牛逼");
+        Generic<Integer> g2 = new Generic<Integer> ();
+        g2.setT (19);
+        Generic<Boolean> g3 = new Generic<Boolean> ();
+        g3.setT (true);
+
+        System.out.println (g1.getT ()+g2.getT ()+g3.getT ());
+    }
+}
+```
+
+## 泛型方法
+
+泛型方法定义格式：
+
+- 格式：修饰符<类型>返回值类型 方法名（类型 变量名）{}
+- 例如：public<T> void show(T t){ }
+
+```java
+//public class Generic {
+//    public void show(String s){
+//        System.out.println (s);
+//    }
+//    public void show(Integer it){
+//        System.out.println (it);
+//    }
+//    public void show(Boolean b){
+//        System.out.println (b);
+//    }
+//}
+//改进1
+//public class Generic<T> {
+//    public void show(T t){
+//        System.out.println (t);
+//    }
+//}
+//改进2
+public class Generic {
+    public <T> void show(T t){
+        System.out.println (t);
+    }
+}
+```
+
+```java
+public class GenericDemo {
+    public static void main (String[] args) {
+//        Generic g = new Generic ();
+//        g.show ("马牛逼");
+//        g.show (30);
+//        g.show (true);
+//        g.show (13.14);
+
+        Generic g = new Generic ();
+        g.show ("我");
+        g.show (1);
+        g.show (12.1);
+        g.show (true);
+    }
+}
+```
+
+## 泛型接口
+
+泛型接口定义格式
+
+- 格式：修饰符 interface 接口名<类型>{ }
+- 例如：public interface Generic<T> { }
+
+```java
+public interface Generic<T> {
+    void show(T t);
+}
+```
+
+```java
+public class GenericImpl<T> implements Generic<T>{
+    @Override
+    public void show (T t) {
+        System.out.println (t);
+    }
+}
+```
+
+```java
+public class GenericDemo {
+    public static void main (String[] args) {
+        Generic<String> g1 = new GenericImpl<String> ();
+        g1.show ("大苏打");
+        Generic<Integer> g2 = new GenericImpl<Integer> ();
+        g2.show (211);
+    }
+}
+```
+
+## 类型通配符
+
+为了表示各种泛型List父类，可以使用类型通配符
+
+- 类型通配符：<?>
+
+- List<?>：表示元素类型未知的List，它的元素可以匹配任何的类型
+
+- 这种带通配符的List仅表示它是各种泛型List的父类，并不能把元素添加其中
+
+  
+
+如果说不希望List<?>是任何泛型List的父类，只希望它代表某一类泛型List的父类，可以使用类型通配符的上限
+
+- 类型通配符上限：<?extends 类型>
+- List<? extends Number>：它表示的类型是Number或者其它子型
+
+除了可以指定类型通配符的上限，也可以指定类型通配符的下限
+
+- 类型通配符的下限：<?super 类型>
+- List<? super Number>：它表示的类型是Number或者其父类型
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class GenericDemo {
+    public static void main (String[] args) {
+//        类型通配符：<?>
+        List<?> list1 = new ArrayList<Object> ();
+        List<?> list2 = new ArrayList<Number> ();
+        List<?> list3 = new ArrayList<Integer> ();
+        System.out.println ("--------");
+//        类型通配符上限：<?extends 类型>
+//        List<? extends Number> list4 = new ArrayList<Object> ();上限是Number，所以不能是Number的父类
+        List<? extends Number> list5 = new ArrayList<Number> ();
+        List<? extends Number> list6 = new ArrayList<Integer> ();
+        System.out.println ("--------");
+//        类型通配符的下限：<?super 类型>
+        List<? super Number> list7 = new ArrayList<Object> ();
+        List<? super Number> list8 = new ArrayList<Number> ();
+//        List<? super Number> list9 = new ArrayList<Integer> ();下限！！！
+    }
+}
+```
+
+## 可变参数
+
+可变参数又称参数个数可变，用做方法的形参出现，那么方法参数个数是可变的
+
+- 格式：修饰符 返回值类型 方法名（数据类型...变量名）{ }
+- 例如：public static int sum(int...a){ }
+
+注意事项
+
+- 这里的变量其实是一个数组
+
+- 如果一个方法有多个参数，包含可变参数，可变参数要放在最后
+
+  ```java
+  public class Demo {
+      public static void main (String[] args) {
+          System.out.println (sum (10));
+          System.out.println (sum (10,20));
+          System.out.println (sum (10,20,30));
+      }
+  //    public static int sum(int... a) {
+  ////        System.out.println (a);
+  ////        return 0;
+  //        int sum = 0;
+  //
+  //        for (int i : a){
+  //            sum += i;
+  //        }
+  //    return sum;
+  //    }
+      public static int sum(int b,int... a){
+          return 0;
+      }
+  }
+  ```
