@@ -1,3 +1,14 @@
+
+
+
+
+# Topic
+
+## 这是一个Private的Markdown，
+
+- 用于记录自己的学习过程中的知识点
+- 用于帮助将来上大学以后的学渣同学
+
 # 基础
 
 ## 创建第一次hello world程序
@@ -5088,7 +5099,7 @@ public class Student implements Comparable<Student> {
         //return 1;按照输入的顺序排序
         //return -1;同上，反过来的
 
-        //按照年龄从小到大排序，年龄相同时，按照名字字母的顺序排序
+        //按照年龄从小到大排序，年龄相同 时，按照名字字母的顺序排序
 
         int num = this.age - s.age;//从小到大
 //        int num = s.age - this.age; 从大到小
@@ -5663,3 +5674,202 @@ public class Demo {
     }
 }
 ```
+
+# Collections
+
+## Collections概述和使用
+
+- 是针对集合操作的工具类
+
+## Collections类的常用方法
+
+- public static <T extends Comparable<? super T>> void sort(List<T> list)：将指定的列表按升序排列
+- public static void reverse(List<?> list)：反转指定列表中的元素的顺序
+- public static void shuffle(List<?> list)：使用默认的随机源随机排列指定的列表
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Demo {
+    public static void main (String[] args) {
+        //创建集合对象
+        List<Integer> list = new ArrayList<> ();
+
+        //添加元素
+        list.add (50);
+        list.add (20);
+        list.add (30);
+        list.add (10);
+        list.add (40);
+        System.out.println (list);
+
+        //public static <T extends Comparable<? super T>> void sort(List<T> list)：将指定的列表按升序排列
+        Collections.sort (list);
+        System.out.println (list);
+        //public static void reverse(List<?> list)：反转指定列表中的元素的顺序
+        Collections.reverse (list);
+        System.out.println (list);
+        //public static void shuffle(List<?> list)：使用默认的随机源随机排列指定的列表
+        Collections.shuffle (list);
+        System.out.println (list);
+    }
+}
+```
+
+# File
+
+## File类概述和构造方法
+
+File：他是文件和目录路径名的抽象表示
+
+- 文件和目录是可以通过File封装成对象的
+- 对于File而言，其封装的并不是一个真正存在的文件，仅仅是一个路径名而已，它可以是真实存在的，也可以是不存在的。将来是要通过具体的操作把这个路径的内容转换为具体存在的。
+
+File(String pathname) 通过将给定的路径名字字符串转换为抽象路径名来创建新的File实例
+
+File(String parent,String child) 从父路径名字字符串和子路径名字字符串创建新的File实例
+
+File(File parent, String child) 从父抽象路径名和子路径名字字符串创新的File实例
+
+```java
+import java.io.File;
+
+public class Demo {
+    public static void main (String[] args) {
+
+//        File(String pathname) 通过将给定的路径名字字符串转换为抽象路径名来创建新的File实例
+        File f1 = new File ("H:\\untitled4\\src\\java.txt");
+        System.out.println (f1);
+//        File(String parent,String child) 从父路径名字字符串和子路径名字字符串创建新的File实例
+        File f2 = new File ("H:\\\\untitled4","java.txt");
+        System.out.println (f2);
+//        File(File parent, String child) 从父抽象路径名和子路径名字字符串创新的File实例
+        File f3 = new File ("H:\\\\untitled4");
+        File f4 = new File (f3,"java.txt");
+        System.out.println (f4);
+
+    }
+}
+```
+
+## File类创建功能
+
+public boolean createNewFile() 当具有该名称的文件不存在时，创建一个由该抽象路径名命名的新空文件
+
+public boolean mkdir() 创建由此抽象路径名命名的目录
+
+public bollean mkdirs() 创建由此抽象路径名命名的目录，包括任何必须但不存在的父目录
+
+```java
+import java.io.File;
+import java.io.IOException;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+
+        File f1 = new File ("H:\\untitled4\\java.txt");
+        System.out.println (f1.createNewFile ());//alt+enter
+
+        File f2 = new File ("H:\\untitled4\\javaSE");
+        System.out.println (f2.mkdir ());
+
+        File f3 = new File ("H:\\untitled4\\javaWeb\\Html");
+        System.out.println (f3.mkdir ());//不可以的，因为没有JavaWeb目录，所以创建不了
+
+        File f4 = new File ("H:\\untitled4\\javaWeb\\Html");
+        System.out.println (f3.mkdirs ());
+        
+    }
+}
+```
+
+## File类判断和获取功能
+
+public boolean isDirectory()：测试此抽象路径名表示的File是否为目录
+
+public boolean isFile()：测试此抽象路径名表示的File是否为文件
+
+public boolean exists()：测试此抽象路径名表示的File是否存在
+
+public String getAbsolutePath()：返回此抽象路径名的绝对路径名字字符串
+
+public String getPath()：将此抽象路径名转换为路径名字字符串
+
+public String getName()：返回由此抽象路径名表示文件或目录的名称
+
+public String[] list()：返回此抽象路径名表示文件的目录中的文件和目录的字符串数组
+
+public File[] listFiles()：返回此抽象路径名表示的目录中的文件和目录的File对象数组
+
+```java
+import java.io.File;
+
+public class Demo {
+    public static void main (String[] args) {
+
+        File f = new File ("H:\\untitled4\\java.txt");
+//        public boolean isDirectory()：测试此抽象路径名表示的File是否为目录
+        System.out.println (f.isDirectory ());
+//        public boolean isFile()：测试此抽象路径名表示的File是否为文件
+        System.out.println (f.isFile ());
+//        public boolean exists()：测试此抽象路径名表示的File是否存在
+        System.out.println (f.exists ());
+//        public String getAbsolutePath()：返回此抽象路径名的绝对路径名字字符串
+        System.out.println (f.getAbsolutePath ());
+//        public String getPath()：将此抽象路径名转换为路径名字字符串
+        System.out.println (f.getPath ());
+//        public String getName()：返回由此抽象路径名表示文件或目录的名称
+        System.out.println (f.getName ());
+        System.out.println ("-----------");
+//        public String[] list()：返回此抽象路径名表示文件的目录中的文件和目录的字符串数组
+//        public File[] listFiles()：返回此抽象路径名表示的目录中的文件和目录的File对象数组
+        File f2 = new File ("H:\\untitled4");
+
+        String[] strArray = f2.list ();
+        for(String str : strArray){
+            System.out.println (str);
+        }
+
+        System.out.println ("---------");
+        File[] fileArray = f2.listFiles ();
+        for(File file : fileArray){
+            if(file.isFile ()){
+                System.out.println (file.getName ());
+            }
+        }
+
+    }
+}
+```
+
+## File类的删除功能
+
+public boolean detele() 删除由此抽象路径名表示的目录或者文件
+
+绝对路径：完整的路径名，不需要其它信息就可以定位它所表示的文件，例如：C:\\JAVA\JAVA.TXT
+
+相对路径：不完整的路径名，必须使用取自其它路径名的信息进行解释，例如：JAVA\JAVA.TXT
+
+```java
+import java.io.File;
+import java.io.IOException;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        File f1 = new File ("src\\Java.txt");
+        System.out.println (f1.createNewFile ());
+
+        System.out.println (f1.delete ());
+    }
+}
+```
+
+## File删除的注意事项
+
+如果一个目录中由内容（目录，文件），不能直接删除，应该先删除内容最后删除目录
+
+## 递归
+
+递归概述：以编程角度来看，递归指的是方法定义中调用方法的本身
