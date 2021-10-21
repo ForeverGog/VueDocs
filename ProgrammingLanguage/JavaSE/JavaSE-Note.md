@@ -5873,3 +5873,247 @@ public class Demo {
 ## 递归
 
 递归概述：以编程角度来看，递归指的是方法定义中调用方法的本身
+
+递归解决问题思路：
+
+把一个复杂的问题层层转化成一个与原问题相似的规模较小的问题来求解
+
+递归策略只需少量的程序就可以描述出解题过程中需要多少次重复计算
+
+递归解决问题要找到两个内容：
+
+- 递归出口：否则会出现内存溢出
+- 递归规则：与原问题相似的规模较小的问题
+
+```java
+public class Demo {
+    public static void main (String[] args) {
+        //调用方法
+        int score = jc (5);
+        //输出结构
+        System.out.println ("5的阶层是"+score);
+    }
+    //定义一个方法，用于递归求阶层，参数作为一个int类型的变量
+        //方法内部判断该变量是否为1
+    public static int jc(int n){
+        if(n==1){
+            return 1;
+        }
+        else {
+            return n*jc(n-1);
+        }
+    }
+
+}
+
+```
+
+# IO流
+
+## io流概述
+
+- IO：输入 / 输出 (Input/Output)
+- 流：是一种抽象概念，对数据传输的总称，也就是说数据在设备间的传输称为流，流的本质是数据传输
+- IO流是用来处理设备间数据传输的问题
+  - 常见的应用：文件复制，文件上传，文件下载
+
+## IO流分类
+
+- 按照数据的流向
+  - 输入流：读数据
+  - 输出流：写数据
+- 按照数据类型来分
+  - 字节流：字节输入流；字节输出流
+  - 字符流：字符输入流；字符输出流
+
+一般来说，IO流的分类是根据数据类型来分的
+
+- 如果数据通过Windows自带的TXT打开，能看的懂，就用字符流
+- 否则使用字节流。
+
+## 字节流写数据
+
+- InputStream：这个抽象类是表示字节输入流所有类的超类
+- OutputStream：这个抽象类是表示字节输出流所有类的超类
+- 子类名特点：子类名称都是以其父类名作为子类名的后缀
+
+FileOutputStream：文件输出流将数据写入File
+
+- FileOutputStream(String name)：创建文件输出流以指定的名称写入文件
+
+使用字节输出流写数据的步骤
+
+- 创建字节输出对象（调用系统功能创建了文件夹，创建字节输出流对象，让字节输出流对象指向文件）
+- 调用字节输出流对象的写数据方法
+- 释放资源（关闭此文件输出流并释放与此流相关的任何系统资源）
+
+```java
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class Demo {
+    public Demo() {
+    }
+
+    public static void main(String[] args) throws IOException {
+        FileOutputStream fos = new FileOutputStream("H:\\untitled4\\fox.txt");
+        fos.write(97);
+        fos.close();
+    }
+}
+```
+
+## 字节流写数据的三种方式
+
+void write(int b)：将指定的字节写入此文件输出流，一次写一个字节数据
+
+void write(byte[] b)：将b.length字节从指定的字节数组写入此文件输出流，一次写一个字节数组数据
+
+void write(byte[] b,int off,int len)：将len字节从指定的字节数组开始，从偏移量off开始写入此文件输出流，一次写一个字节数组的部分数据
+
+```java
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        FileOutputStream fos = new FileOutputStream ("H:\\untitled4\\javase.txt");
+        fos.write (97);
+//        byte[] bys = {1,2,3,4,5};
+        byte[] bys ="abcde".getBytes();
+        fos.write (bys);
+        fos.write (bys,0,bys.length);
+        
+        fos.close ();
+    }
+}
+```
+
+## 字节流写数据的换行和追加写入
+
+- 写完数据后，加换行符
+  - widows:\r\n
+  - linux:\n
+  - mac:\r
+- 追加写入
+  - public FileOutputStream(String name,boolean append)
+  - 创建文件输出流以指定的名称写入文件，如果第二个参数为true，则字节将写入文件的末尾而不是开头
+
+```java
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        FileOutputStream fos = new FileOutputStream ("H:\\untitled4\\javase.txt",true);
+
+        for(int i = 0;i < 10; i++){
+            fos.write("hello".getBytes());
+            fos.write ("\r\n".getBytes());
+        }
+
+        fos.close ();
+    }
+}
+```
+
+## 字节流写数据加异常处理
+
+```java
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class Demo {
+    public static void main (String[] args) {
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream ("H:\\untitled4\\javase.txt" ,true);
+            fos.write ("hello".getBytes ());
+        }catch (IOException e){
+            e.printStackTrace ();
+        }finally {
+            if(fos!=null){
+                try {
+                    fos.close ();
+                }catch (IOException e) {
+                    e.printStackTrace ();
+                }
+            }
+        }
+    }
+}
+```
+
+## 字节流读取数据（一次读一个字节数据）
+
+把fos.txt中的内容输出在控制台
+
+- FileInputStream(String name)：通过打开与实际文件的链接来创建一个FileInputStream，该文件由文件系统中的路径名name命名
+
+```java
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        FileInputStream fis = new FileInputStream ("H:\\untitled4\\javase.txt");
+
+//        int read = fis.read ();
+//        System.out.println (read);
+//        System.out.println ((char)read);
+//
+//        read = fis.read ();
+//        System.out.println (read);
+//        System.out.println ((char)read);
+//
+//        read = fis.read ();
+//        System.out.println (read);
+//        System.out.println ((char)read);
+//
+//        read = fis.read ();
+//        System.out.println (read);
+//        System.out.println ((char)read);
+
+//        int by = fis.read ();
+//        while(by!=-1){
+//            System.out.println ((char) by);
+//            by = fis.read ();
+//        }
+        //优化
+        int by;
+        while((by= fis.read ())!=-1){
+            System.out.println ((char)by);
+        }
+
+        fis.close ();
+    }
+}
+```
+
+## 字节流读取数据（一次读一个字节数组）
+
+```java
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        FileInputStream fis = new FileInputStream ("H:\\untitled4\\javase.txt");
+        byte[] bys = new byte[1024];
+
+        int len;
+        while((len=fis.read (bys))!=-1){
+            System.out.println (new String (bys,0,len));
+        }
+
+        fis.close ();
+    }
+}
+```
