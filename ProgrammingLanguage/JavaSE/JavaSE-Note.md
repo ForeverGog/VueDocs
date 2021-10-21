@@ -5910,7 +5910,7 @@ public class Demo {
 
 # IO流
 
-## io流概述
+## IO流概述
 
 - IO：输入 / 输出 (Input/Output)
 - 流：是一种抽象概念，对数据传输的总称，也就是说数据在设备间的传输称为流，流的本质是数据传输
@@ -6117,3 +6117,85 @@ public class Demo {
     }
 }
 ```
+
+
+
+## 字节缓冲流
+
+- BufferOutputStream：该类实现缓冲输出流，通过设置这样的输出流，应用程序可以向底层输出流写入字节，而不必为写入的每个字节导致底层系统的调用
+- BufferedInputStream：创建BufferedInputStream将创建一个内部缓冲区数组。当从流中读取或跳过字节时，内部缓冲区将根据需要从所包含的输入流中重新填充，一次很多字节
+
+构造方法：
+
+- 字节缓冲输出流：BufferedOutputStream(OutputStream out)
+- 字节缓冲输入流：BufferedInputStream(InputStream in)
+
+- 字节缓冲流仅仅提供缓冲区，而真正读写数据还得依靠基本的字节流对象进行操作
+
+```java
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+//        //字节缓冲输出流：BufferedOutputStream(OutputStream out)
+//
+////        FileOutputStream fos = new FileOutputStream ("H:\\untitled4\\javase.txt");
+////        BufferedOutputStream bos = new BufferedOutputStream (fos);
+//        //合成为1步
+//        BufferedOutputStream bos = new BufferedOutputStream (new FileOutputStream ("H:\\\\untitled4\\\\javase.txt"));
+//        //写数据
+//        bos.write ("hello\r\n".getBytes());
+//        bos.write ("hello\r\n".getBytes());
+//
+//        bos.close ();
+//
+
+
+        //字节缓冲输入流：BufferedInputStream(InputStream in)
+        BufferedInputStream bis = new BufferedInputStream (new FileInputStream ("H:\\untitled4\\javase.txt"));
+        //一次读取一个字节数据
+//        int by;
+//        while((by=bis.read ())!=-1){
+//            System.out.println (by);
+//        }
+
+        //一次读取一个字节数组的数据
+        byte[] bys = new byte[1024];
+        int len;
+        while((len=bis.read (bys))!=-1){
+            System.out.println (new String (bys,0,len));
+        }
+
+        bis.close ();
+    }
+}
+```
+
+# 字符流
+
+## 为什么出现字符流
+
+由于字节流操作中文不方便，所以Java提供字符流
+
+- 字符流 = 字节流+编码表
+
+用字节流复制文本文件时，文件也会有中文，原因是最终底层操作会自动进行字节拼接成中文。
+
+- 汉字在存储时，无论选择哪种编码存储，第一个字节都是负数
+
+## 编码表
+
+- 计算机中储存的信息是由二进制（Bin）表示。
+- 按照某种规则，将字符储存到计算机中，称为编码，反之，将储存在计算机中的二进制数按照某种规则解析显示出来，称为解码。按照X编码存储，必须按照X编码解析，这样才能显示正确的文本符号。否则就乱码。
+
+## 字符集
+
+- 是一个系统支持的所有字符集合，包括所有国家文字，符号。
+- 计算机要准确的存储识别各种字符集符号，就需要进行字符解码，一套字符集必然有一套字符编码。
+  - 常见字符集有ASCII、GBXXX、Unicode等
+- ASCII（American Standard Code for Information Interchange，美国信息交换标准编码）：基于拉丁字母一套编码系统，用于显示现代英语，主要包括控制字符（回车键、退格、换行）和可显示字符（英文大小写字符，阿拉伯数字，西文符号）
+- 基本的ASCII字符集，使用7位表示一个字符，共128字符。ASCII的扩展字符集使用8位表示一个字符，共256字符，方便支持欧洲常用字符。是一个系统支持的所有字符的集合，包括各个国家文字，标点符号，图形符号，数字等
+- GBXXX字符集（中文的。。。不想写了，手断了）
+- Unicode字符集
+- 标准万国码，最常用UTF-8。其它不需要知道了。因为太长了，懒得打字。
