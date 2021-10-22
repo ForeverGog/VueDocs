@@ -6199,3 +6199,179 @@ public class Demo {
 - GBXXX字符集（中文的。。。不想写了，手断了）
 - Unicode字符集
 - 标准万国码，最常用UTF-8。其它不需要知道了。因为太长了，懒得打字。
+
+## 字符串中的编码解码问题
+
+编码
+
+- byte[] getBytes()：使用平台的默认字符集将该String编码为一系列字节，将结果存储的字节数组中
+- byte[] getBytes(String charsetName)：使用指定的字符集将该String编码为一系列字节，将结果存储到新的字节数组中。
+
+
+
+解码
+
+- String(byte[] bytes)：通过使用平台的默认字符集解码指定的字节数组来构造新的String
+- String(byte[] bytes,String charsetName)：通过指定的字符集解码指定的字节数组来构造新的String
+
+```java
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
+public class StringDemo {
+    public static void main (String[] args) throws UnsupportedEncodingException {
+        String s = "中国";
+        //byte[] getBytes()：使用平台的默认字符集将该String编码为一系列字节，将结果存储的字节数组中
+        byte[] bys = s.getBytes ();
+        System.out.println (Arrays.toString (bys));//[-28, -72, -83, -27, -101, -67]
+        //byte[] getBytes(String charsetName)：使用指定的字符集将该String编码为一系列字节，将结果存储到新的字节数组中。
+        byte[] bytes = s.getBytes (StandardCharsets.UTF_8);
+        byte[] bytes1 = s.getBytes ("GBK");
+        System.out.println (Arrays.toString (bytes));//[-28, -72, -83, -27, -101, -67]
+        System.out.println (Arrays.toString (bytes1));//[-42, -48, -71, -6]
+
+
+        System.out.println ("-------------------");
+        //String(byte[] bytes)：通过使用平台的默认字符集解码指定的字节数组来构造新的String
+        String ss = new String (bys);
+        System.out.println (ss);//中国，默认字符集
+
+        //String(byte[] bytes,String charsetName)：通过指定的字符集解码指定的字节数组来构造新的String
+        String sss = new String (bys,"UTF-8");//中国
+        String ssss = new String (bys,"GBK");//涓浗,因为编码是UTF-8，解码是GBK
+        String sssss = new String (bytes1,"GBK");//中国，编码是GBK,解码是GBK
+
+        System.out.println (sss);
+        System.out.println (ssss);
+        System.out.println (sssss);
+
+
+
+    }
+}
+```
+
+## 字符流中的编码解码问题
+
+字符流抽象基类
+
+- Reader：字符输入流的抽象类
+- Writer：字符输出流的抽象类
+
+字符流中的编码解码问题相关的两个类
+
+- InputStreamReader
+- OutputStreamWriter
+
+```java
+import java.io.*;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+//        FileOutputStream fos = new FileOutputStream ("untitled\\javase.txt");
+//        OutputStreamWriter osw = new OutputStreamWriter (fos);
+        //合并为一部
+
+//        OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream ("H:\\untitled4\\javase.txt"),"UTF-8");//中国
+        OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream ("H:\\untitled4\\javase.txt"),"GBK");//�й�
+        osw.write ("中国");
+        osw.close ();
+        InputStreamReader isr = new InputStreamReader (new FileInputStream ("H:\\untitled4\\javase.txt"),"GBK");
+        //一次读一个字符
+        int ch;
+        while((ch=isr.read ())!=-1){
+            System.out.print ((char)ch);
+        }
+        isr.close ();
+    }
+}
+```
+
+## 字符流写数据的5个方式
+
+- void write(int c) 写一个字符
+
+- void write(char[] cbuf) 写入一个字符数组
+
+- void write(char[] cbuf,int off,int len) 写入字符数组的一部分
+
+- void write(String str)写入一个字符串
+
+- void write(String str,int off,int len)写入一个字符串的一部分
+
+- flush() 刷新流，还可以继续写数据
+
+- close() 关闭流，释放资源，但是在关闭之前会刷新流一次，一旦关闭就不能写数据
+
+  ```java
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.io.OutputStreamWriter;
+  
+  public class Demo {
+      public static void main (String[] args) throws IOException {
+          OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream ("H:\\untitled4\\javase.txt"));
+  
+          //void write(int c) 写一个字符
+          osw.write (97);
+          //void flush()刷新流
+          osw.flush ();
+          osw.write (98);
+          osw.flush ();
+          osw.write (99);
+  
+          //void write(char[] cbuf) 写入一个字符数组
+          char[] chs = {'a','b','c'};
+          osw.write (chs);
+  
+  //        void write(char[] cbuf,int off,int len) 写入字符数组的一部分
+  //        osw.write (chs,0,chs.length);
+  
+  //        void write(String str)写入一个字符串
+          osw.write ("abcde");
+  //        void write(String str,int off,int len)写入一个字符串的一部分
+          osw.write ("1234567",0,7);
+          osw.write ("abcdef",0,"abcdef".length ());
+          osw.close ();
+  
+      }
+  }
+  ```
+
+## 字节流读数据的2个方式
+
+- int read() 一次读一个字符数据
+- int read(char[] cbuf) 一次读一个字符数组数据
+
+```java
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        InputStreamReader isr = new InputStreamReader (new FileInputStream ("H:\\untitled4\\javase.txt"));
+
+        //int read() 一次读一个字符数据
+        int ch;
+        while((ch=isr.read ())!=-1){
+            System.out.print ((char)ch);
+        }
+
+        //int read(char[] cbuf) 一次读一个字符数组数据
+        char[] chs = new char[1024];
+        int len;
+        while((len=isr.read (chs))!=-1){
+            System.out.print (new String (chs,0,len));
+        }
+        isr.close ();
+    }
+}
+```
+
+## 字符缓冲流
+
+- BufferedWriter：将文本写入字符输出流，缓冲字符，以提供单个字符，数组，字符串的高效写入，可以指定缓冲区大小，或者可以接受默认大小。默认值足够大，可以用于大多数用途。
