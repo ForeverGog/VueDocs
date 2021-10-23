@@ -2,6 +2,8 @@
 
 
 
+
+
 # Topic
 
 ## 这是一个Private的Markdown，
@@ -6372,6 +6374,235 @@ public class Demo {
 }
 ```
 
+# 字节缓冲流
+
 ## 字符缓冲流
 
 - BufferedWriter：将文本写入字符输出流，缓冲字符，以提供单个字符，数组，字符串的高效写入，可以指定缓冲区大小，或者可以接受默认大小。默认值足够大，可以用于大多数用途。
+- BufferedReader：从字符输出流读取文本，缓冲字符，以提供字符，数组和行的高效读取，可以指定缓冲区大小，或者可以使用默认大小。默认值足够大，可以用于大多数用途。
+
+构造方法
+
+- BufferedWriter(Writer out)
+- BufferedReader(Reader in)
+
+```java
+import java.io.*;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        //BufferedWriter(Writer out)
+//        FileWriter fw = new FileWriter ("H:\\untitled4\\javase.txt");
+//        BufferedWriter bw = new BufferedWriter (fw);
+//        BufferedWriter bw = new BufferedWriter (new FileWriter ("H:\\untitled4\\javase.txt"));
+//        bw.write ("HELLO\r\n");
+//        bw.write ("world\r\n");
+//        bw.close ();
+
+//        BufferedReader(Reader in)
+        BufferedReader br = new BufferedReader (new FileReader ("H:\\untitled4\\javase.txt"));
+
+        //一次读一个字符数据
+//        int ch;
+//        while ((ch = br.read ())!=-1){
+//            System.out.print ((char)ch);
+//        };
+//        br.close ();
+        //一次读取一个字符数组数据
+        char[] chs = new char[1024];
+        int len;
+        while((len= br.read (chs))!=-1){
+            System.out.println (new String(chs,0,len));
+        }
+    }
+}
+```
+
+## 字符缓冲流特有功能
+
+BufferedWriter:
+
+- void newLine()：写一行行分隔符，行分隔符字符串由系统属性定义
+
+BufferedReader:
+
+- public String readLine()：读一行文字，结果包含行的内容字符串，不包括任何终止字符，如果流的结尾已经到达，则为NULL
+
+```java
+import java.io.*;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+//        //创建字符缓冲输出流
+//        BufferedWriter bw = new BufferedWriter (new FileWriter ("H:\\untitled4\\javase.txt"));
+//
+//        //写数据
+//        for (int i = 0;i<10;i++){
+//            bw.write ("hello"+i);
+////            bw.write ("\r\n");
+//            bw.newLine ();
+//            bw.flush ();
+//        }
+//
+//        bw.close ();
+
+        //创建字符输出流
+        BufferedReader br = new BufferedReader (new FileReader ("H:\\untitled4\\javase.txt"));
+
+        //public String readLine()：读一行文字，结果包含行的内容字符串，不包括任何终止字符，如果流的结尾已经到达，则为NULL
+
+        //第一次读取数据
+        String line = br.readLine ();
+        System.out.println (line);//hello 0
+
+        //第二次读取数据
+        line = br.readLine ();
+        System.out.println (line);// hello 1
+
+        String lines;
+        while((lines=br.readLine ())!=null){
+            System.out.print (lines);
+        }
+        br.close ();
+    }
+}
+```
+
+## 复制文件的异常处理 JDK7和JDK9和Try Catch
+
+```java
+import javax.imageio.IIOException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class Demo {
+    public static void main (String[] args) {
+
+    }
+
+    //JDK9
+    private static void JDK9() throws IOException{
+        FileReader fr = new FileReader ("javase.txt");
+        FileWriter fw = new FileWriter ("javase.txt");
+        try(fr;fw){
+            char[] chs = new char[1024];
+            int len;
+            while((len=fr.read ())!=-1){
+                fw.write (chs,0,len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace ();
+        }
+        //不用写close，jdk7以后会自动释放资源
+    }
+    //JDK7
+    private static void JDK7(){
+        try(FileReader fr = new FileReader ("javase.txt");
+            FileWriter fw = new FileWriter ("javase.txt");){
+
+            char[] chs = new char[1024];
+            int len;
+            while((len=fr.read ())!=-1){
+                fw.write (chs,0,len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace ();
+        }
+        //不用写close，jdk7以后会自动释放资源
+    }
+
+    //try catch
+    private static void TRYCATCH(){
+        FileReader fr = null;
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter ("javase.txt");
+            fr = new FileReader ("javase.txt");
+
+            char[] chs = new char[1024];
+            int len;
+
+            while((len = fr.read ())!=-1){
+                fw.write (chs,0,len);
+            }
+
+        }catch (IOException e){
+            e.printStackTrace ();
+        }finally {
+            if(fw!=null){
+                try {
+                    fr.close ();
+                } catch (IOException e){
+                    e.printStackTrace ();
+                }
+
+            }
+            if(fr!=null){
+                try {
+                    fr.close ();
+                } catch (IOException e){
+                    e.printStackTrace ();
+                }
+            }
+        }
+    }
+}
+```
+
+# 特殊操作流
+
+## 标准输入输出流
+
+System类中有两个静态的成员变量
+
+- public static final InputStream in：标准输入流。通常该流对应于键盘输入或由主机环境或用户指定的另一个输入源
+- public static final PrintStream ：标准输出流。通常该流对应于显示输出或由主机环境或用户指定的另一个输出目标
+
+自己实现键盘录入数据
+
+```java
+BufferedReader br = new BufferedReader (new InputStreamReader (System.in));
+```
+
+所以使用万能的Scanner
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        //public static final InputStream in：标准输入流。通常该流对应于键盘输入或由主机环境或用户指定的另一个输入源
+//        InputStream in = System.in;
+////        int by;
+////        while((by=in.read ())!=-1){
+////            System.out.println ((char)by);
+////        }
+//
+//        //如何把字节流转化为字符流
+//        InputStreamReader isr = new InputStreamReader (in);
+//
+//        //使用字符流实现一次读取一行数据
+//        //但是一次读取一行数据的方法是字符缓冲输入流的特有方法
+//        BufferedReader br =new BufferedReader (isr);
+
+        //合成为1步
+        BufferedReader br = new BufferedReader (new InputStreamReader (System.in));
+        System.out.println ("请输入一个字符串");
+        String s = br.readLine ();
+        System.out.println ("字符串是"+s);
+
+        System.out.println ("请输入一个数");
+        int i = Integer.parseInt (br.readLine ());
+        System.out.println ("您输入的整数是"+i);
+
+        //自己实现键盘录入数据太麻烦，所以有一个万能的Scanner
+        Scanner sc = new Scanner (System.in);
+
+    }
+}
+```
