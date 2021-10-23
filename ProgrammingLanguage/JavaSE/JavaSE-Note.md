@@ -1,9 +1,3 @@
-
-
-
-
-
-
 # Topic
 
 ## 这是一个Private的Markdown，
@@ -6552,7 +6546,7 @@ public class Demo {
 
 # 特殊操作流
 
-## 标准输入输出流
+## 标准输入
 
 System类中有两个静态的成员变量
 
@@ -6606,3 +6600,167 @@ public class Demo {
     }
 }
 ```
+
+## 标准输出流
+
+输出语句的本质，是一个标准的输出流
+
+- PrintStream ps = System.out
+
+- PrintStream类有的方法，System.out都能用
+
+- ```java
+  import java.io.PrintStream;
+  
+  public class Demo {
+      public static void main (String[] args) {
+          //public static final PrintStream out标准输出流
+          PrintStream ps = System.out;
+  
+          ps.println ("hello");
+          ps.println (100);
+  
+          //System.out本质是一个字节输出流
+          System.out.println ("hello");
+          System.out.println (100);
+      }
+  }
+  ```
+
+## 字节打印流
+
+- 打印流分为：
+
+  - 字节打印流：PrintStream
+  - 字符打印流：PrintWriter
+
+- 打印流的特点：
+
+  - 只负责输出数据，不负责读取数据
+  - 有自己的特殊方法
+
+- 字节打印流
+
+  - PrintStream(String fileName）：使用指定的文件名创建新的打印流
+  - 使用继承父类的方法写数据，查看的时候会转码；使用自己的特有方法写数据，查看的数据原样输出
+
+  ```java
+  import java.io.FileNotFoundException;
+  import java.io.PrintStream;
+  
+  public class Demo {
+      public static void main (String[] args) throws FileNotFoundException {
+          PrintStream ps = new PrintStream ("H:\\untitled4\\javase.txt");
+  
+          //写数据
+          ps.write (97);//a
+  
+          //特有方法写数据
+          ps.print(97);//97
+          ps.close ();
+      }
+  }
+  ```
+
+## 字符打印流
+
+字符打印流PrintWriter的构造方法：
+
+- PrintWriter（String fileName）使用指定的文件名创建一个新的PrintWriter，而不需要自动执行刷新
+- PrintWriter（Wirter out，boolean autoFlush）
+  - 创建一个新的PrintWriter
+  - out：字符输出流
+    - autoFlush：一个布尔值，如果为真，则为println,printf或者format方法将方法刷新输出缓冲区
+
+```java
+import java.io.*;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+//        PrintWriter pw = new PrintWriter ("H:\\untitled4\\java.txt");
+//        pw.print (1);
+//        pw.println (2);
+//        pw.flush ();
+
+        PrintWriter pw = new PrintWriter (new FileWriter ("H:\\untitled4\\java.txt"),true);
+        pw.println ("hello");
+        pw.println ("hello");
+        pw.println ("hello");
+        pw.close ();
+
+    }
+}
+```
+
+## 对象序列化流
+
+对象序列化：就是将对象保存到磁盘中，或者在网络中传输对象
+
+这种机制就是使用一个字节序列表示一个对象，该字节序列包括：对象的类型，对象的数据和对象中存储的属性等信息字节序列写到文件之后，相当于文件中持久保存了一个对象的信息。
+
+反之，该字节序列还可以从文件夹读取回来，重构对象，对它进行反序列化
+
+- 对象序列化流：ObjectOutputStream
+- 对象反序列化流：ObjectInputStream
+
+## ObjectOutputStream
+
+- 将Java对象的原始数据类型和图形写入OutputStream。可以使用ObjectInputStream读取（重构）对象。可以通过使用流的文件来实现对象的持久存储，如果对象
+
+- 构造方法
+
+  - OjbectOutputStream（OutputStream out）：创建一个写入指定的OutputStream的ObjectOutputStream
+
+- 序列化对象的方法
+
+  - void writeObject(Object obj)：将指定的对象写入ObjectOutputStream
+
+- 注意
+
+  - 一个对象想要被实例化，该对象所属的类必须实现Serializable接口
+  - Serializable是一个标记接口，不需要重写
+
+  ```java
+  import java.io.Serializable;
+  
+  public class Student implements Serializable {
+      private String name;
+      private int age;
+  
+      public Student (String name ,int age) {
+          this.name = name;
+          this.age = age;
+      }
+  
+      public String getName () {
+          return name;
+      }
+  
+      public void setName (String name) {
+          this.name = name;
+      }
+  
+      public int getAge () {
+          return age;
+      }
+  
+      public void setAge (int age) {
+          this.age = age;
+      }
+  }
+  
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.io.ObjectOutputStream;
+  
+  public class Demo {
+      public static void main (String[] args) throws IOException {
+          ObjectOutputStream oos = new ObjectOutputStream (new FileOutputStream ("H:\\untitled4\\javase.txt"));
+          Student s = new Student ("马牛逼",19);
+          oos.writeObject (s);
+          oos.close ();
+      }
+  }
+  
+  ```
