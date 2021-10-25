@@ -6764,3 +6764,58 @@ public class Demo {
   }
   
   ```
+
+## ObjectInputStream
+
+对象反序列化流：ObjectInputStream
+
+- OjbectInputStream反序列化先前使用ObjectOutputStream编写的原始数据和对象
+
+构造方法：
+
+- ObjectInputStream（InputStream in）：创建从指定的InputStream读取的ObjectInputStream
+
+反序列化对象的方法：
+
+- Object readObject()：从ObjectInputStream读取一个对象
+
+```java
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+public class Demo  {
+    public static void main (String[] args) throws IOException, ClassNotFoundException {
+        //ObjectInputStream（InputStream in）：创建从指定的InputStream读取的ObjectInputStream
+        ObjectInputStream ois =new ObjectInputStream (new FileInputStream ("javase.txt"));
+        //Object readObject()：从ObjectInputStream读取一个对象
+        Object o = ois.readObject ();
+        Student s = (Student) o;
+
+        System.out.println (s.getName ()+","+s.getAge ());
+        ois.close ();
+
+    }
+}
+```
+
+## serivalVersionUID &  transient
+
+用对象序列化列化了一个对象后，假如修改了对象所属的类文件后。读取数据会出问题
+
+- 抛出InvalidClassException
+
+- 给对象所属的类加一个serialVersionUID
+  - private static final long serialVersionUID = 42L;
+
+如果对象中的某个值不想被序列化，
+
+- 给该成员变量加transient关键字修饰，该关键字标记的成员不会参与序列化过程
+
+## Properties作为Map集合的使用
+
+- 是一个Map体系的集合类
+- Properties可以保存到流中或者从流中加载
+- 
+
