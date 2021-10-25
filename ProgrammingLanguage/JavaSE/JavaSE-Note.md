@@ -6816,6 +6816,85 @@ public class Demo  {
 ## Properties作为Map集合的使用
 
 - 是一个Map体系的集合类
-- Properties可以保存到流中或者从流中加载
-- 
 
+- Properties可以保存到流中或者从流中加载
+
+  
+
+- Object setProperty(String key,String value) 设置集合的Key和Value，都是String类型，底层调用Hashtable方法 put
+- String getProperty(String key) 使用此属性列表中的Key搜索属性
+- Set<String> stringPropertyNames() 从该属性列表中返回一个不可修改的Key集，其中Key及其对应的值是字符串
+
+```java
+import java.util.Properties;
+import java.util.Set;
+
+public class Demo {
+    public static void main (String[] args) {
+        //创建集合对象
+        Properties prop = new Properties ();
+//        Object setProperty(String key,String value) 设置集合的Key和Value，都是String类型，底层调用Hashtable方法 put
+        prop.setProperty ("1","11");
+        prop.setProperty ("2","22");
+        prop.setProperty ("3","33");
+
+//        String getProperty(String key) 使用此属性列表中的Key搜索属性
+        System.out.println (prop.getProperty ("1"));
+
+//        Set<String> stringPropertyNames() 从该属性列表中返回一个不可修改的Key集，其中Key及其对应的值是字符串
+        Set<String> nums = prop.stringPropertyNames ();
+        for(String key : nums){
+//            System.out.println (key);获得key
+            String value = prop.getProperty (key);
+            System.out.println (value);//获得value
+        }
+
+    }
+}
+```
+
+## Properties和IO流结合方法
+
+- void load(InputStream inStream) 从输入字节流读取属性列表（Key和Value对）
+- void load(Reader reader) 从输入字符流读取属性列表（Key和Value对）
+- void store(OutputStream out,String comments) 将此属性列表（Key和Value对）写入此Properties表中，以适合于使用load（InputStream）方法的格式写入输出字节流。
+- void store(Writer writer,String comments) 将此属性列表（Key和Value对）写入此Properties标中，以适合使用load（Reader）方法的格式写入输出字符流
+
+```java
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        //把集合中的数据保存到文件
+        myStore();
+
+        //把文件中的数据加载到集合
+        myLoad();
+    }
+
+    private static void myLoad () throws IOException {
+        Properties prop = new Properties ();
+//        void load(Reader reader) 从输入字符流读取属性列表（Key和Value对）
+        FileReader fr = new FileReader ("javase.txt");
+        prop.load (fr);
+        fr.close ();
+
+        System.out.println (prop);
+    }
+    private static void myStore () throws IOException {
+        Properties prop = new Properties ();
+        prop.setProperty ("1","a");
+        prop.setProperty ("2","b");
+        prop.setProperty ("3","c");
+
+//        void store(Writer writer,String comments) 将此属性列表（Key和Value对）写入此Properties标中，以适合使用load（Reader）方法的格式写入输出字符流
+        FileWriter fw = new FileWriter ("javase.txt");
+        prop.store (fw,null);
+        fw.close ();
+    }
+}
+```
