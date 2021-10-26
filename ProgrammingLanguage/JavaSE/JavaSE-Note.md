@@ -7143,3 +7143,301 @@ public class ThreadDeamonDemo{
 }
 
 ```
+
+## 实现Runnable接口的方式
+
+- 定义一个类MyRunnable实现Runnable接口
+- 在MyRunnable类中重写run（）方法
+- 创建MyRunnable
+- 创建Thread类的对象，把MyRunnable对象作为构造方法的参数
+- 启动线程
+
+多线程的实现方案的两种
+
+- 继承Thread类
+- 实现Runnble接口
+
+相比继承Thread类，实现Runnable接口的好处
+
+- 避免了Java的单继承局限性
+- 适合多个相同程序的代码去处理同一个资源的情况，把线程和程序的代码，数据有效分离，较好的体现了面向对象的设计思想
+
+```java
+public class MyRunnable implements Runnable{
+
+    @Override
+    public void run () {
+        for(int i = 0;i<100;i++){
+            System.out.println (Thread.currentThread ().getName ()+"i"+i);
+            //不能直接用getName（）方法
+        }
+    }
+}
+
+public class Demo {
+    public static void main (String[] args) {
+        MyRunnable my = new MyRunnable ();
+
+        Thread t1 = new Thread (my,"线程1");
+        Thread t2 = new Thread (my,"线程2");
+
+        t1.start ();
+        t2.start ();
+    }
+}
+
+```
+
+## 同步代码块
+
+锁多条语句操作共享数据，可以通过使用同步代码块实现
+
+格式
+
+synchronized（任意对象）{
+
+​		多条语句操作共享数据的代码
+
+}
+
+- 好处：解决了多线程的数据安全问题
+- 弊端：线程很多的时候，效率降低。耗费资源
+
+```java
+public class SellTicket implements Runnable{
+    private int ticket = 100;
+    private Object obj = new Object ();
+
+    @Override
+    public void run () {
+        while(true) {
+            try {
+                Thread.sleep (100);
+            } catch (InterruptedException e) {
+                e.printStackTrace ();
+            }
+            synchronized (obj) {
+                if (ticket > 0){
+                    System.out.println (Thread.currentThread ().getName () + "正在出售第" + ticket + "张票");
+                    ticket--;
+                }
+            }
+        }
+    }
+}
+
+public class SellTicketDemo {
+    public static void main (String[] args) {
+        SellTicket st = new SellTicket ();
+        Thread t1 = new Thread (st,"窗口1");
+        Thread t2 = new Thread (st,"窗口2");
+        Thread t3 = new Thread (st,"窗口3");
+        t1.start ();
+        t2.start ();
+        t3.start ();
+    }
+}
+
+```
+
+## 同步方法
+
+同步方法就是把synchronized加到方法上
+
+- 格式：
+
+修饰符synchronized返回值类型 方法名 （方法参数）{  }
+
+```java
+private void sellTicket () {
+    try {
+        Thread.sleep (100);
+    } catch (InterruptedException e) {
+        e.printStackTrace ();
+    }
+    synchronized (obj) {
+        if (ticket > 0){
+            System.out.println (Thread.currentThread ().getName () + "正在出售第" + ticket + "张票");
+            ticket--;
+        }
+    }
+}
+```
+
+## 线程安全的类
+
+StringBuffer
+
+- 线程安全，可变的字符序列
+- 从JDK5开始，被StringBuffer替代，通常应该使用StringBuffer类，因为它支持所有相同的操作。但是它更快，因为它不执行同步
+
+Vector
+
+- 从Java 2 平台v1.2开始，该类改进了List接口，使其成为Java Collections Framework成员。与新的集合实现不同，Vector被同步。如果不需要线程安全的实现，建议用ArrayList代替Vector
+
+Hashtable
+
+- 该类实现了一个哈希表，它将Key映射到Value，任何非null的对象都可以用作key和value。
+- 从Java2平台v1.2开始，该类进行了改进，实现了Map接口，使其成为JavaJava Collections Framework成员。与新的集合实现不同，Hashtable被同步如果不需要线程安全的实现，建议用HashMap代替HashTable
+
+```java
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Vector;
+
+public class Demo {
+    public static void main (String[] args) {
+        StringBuffer sb1 = new StringBuffer ();
+        StringBuilder sb2 = new StringBuilder ();
+
+        Vector<String>v = new Vector<String> ();
+        ArrayList<String> array = new ArrayList<String> ();
+
+        Hashtable<String,String> ht = new Hashtable<String ,String> ();
+        HashMap<String,String> hm = new HashMap<String ,String> ();
+
+        
+    }
+}
+
+Ctrl+b 看源代码
+```
+
+## 生产者消费者模式
+
+一个多线程协作的经典模式。
+
+包含了两类线程
+
+- 一类是生产者线程用于生产数据
+- 一类是消费者线程用于消费数据
+
+为了解耦生产者和消费者的关系，通常会采用共享的数据区域，就像一个仓库
+
+- 生产者生产数据之后直接放到共享数据区域内，并不需要关系消费者的行为
+- 消费者只需要从共享数据区中获取数据，并不需要关系生产者的行为
+
+为了体现过程中的等待和唤醒，Java提供了几个方法，在Object类中
+
+- void wait() 导致当前线程等待，直到另一个线程调用该对象的notify()或者notifyAll()方法
+- void notify() 唤醒正在等待对象监视器的单个线程
+- void notyfyAll() 唤醒正在等待对象监视器的所有线程
+
+```java
+public class Producer implements Runnable{
+
+    private Box b;
+
+    public Producer(Box b){
+        this.b=b;
+    }
+
+    @Override
+    public void run () {
+        for(int i = 1 ; i<= 5;i++){
+            b.put (i);
+        }
+    }
+}
+
+public class Customer implements Runnable {
+
+    private Box b;
+    public Customer (Box b) {
+        this.b=b;
+    }
+
+    @Override
+    public void run () {
+        while (true){
+            b.get ();
+        }
+    }
+}
+
+
+public class Box {
+
+    private int milk;
+
+    private boolean state = false;
+
+    public synchronized void put(int milk){
+
+        if(state=true){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace ();
+            }
+        }
+
+        this.milk = milk;
+        System.out.println ("快递小哥将"+this.milk+"瓶放入箱子");
+
+        state=true;
+
+        notifyAll ();//唤醒其它线程
+    }
+
+    public synchronized void get(){
+        if(!state) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace ();
+            }
+        }
+        System.out.println ("用户拿到第"+this.milk+"瓶奶");
+
+        state = false;
+
+        notifyAll ();//唤醒其它线程
+    }
+}
+
+public class BoxDemo {
+    public static void main (String[] args) {
+        Box b = new Box ();
+
+        Producer p = new Producer (b);
+
+        Customer c = new Customer (b);
+
+        Thread t1 = new Thread (p);
+        Thread t2 = new Thread (c);
+
+        t1.start ();
+        t2.start ();
+
+    }
+}
+
+```
+
+# 网络编程
+
+## 概述
+
+计算机网络
+
+- 是指将地理位置不同的具有独立功能的多台计算机及其外部设备，通过通信线路链接起来，在网络操作系统，网络管理软件及其网络通信协议的管理和协商下，实现资源共享和传递的计算机系统。
+
+网络编程
+
+- 在网络通信协议下，实现网络互连的不同计算机上运行的程序间可以进行数据交换
+
+## 网络编程三要素
+
+IP地址
+
+- 让计算机互相通信，要为每台计算机指定一个标识号，这个标识号就是IP
+
+端口
+
+- 每台计算机有很多程序，在网络通讯的时候，端口号是唯一表示设备中的应用程序了，也就是程序的标识
+
+协议
+
+- 通过计算机网络可以使用多台计算机链接，位于一个网络计算机在进行链接和通信时需要遵守的约定，这些通信这链接被称为网络通信协议，它对数据的传输格式，传输速率，传输步骤做了一定的规定。通信双方必须遵守才能完成数据交换，常见的协议有UDP协议和T
