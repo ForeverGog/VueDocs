@@ -6898,3 +6898,248 @@ public class Demo {
     }
 }
 ```
+
+# 实现多线程
+
+## 进程
+
+进程：是正在运行的程序
+
+- 是系统进行资源分配和调用的独立单位
+- 每一个进程都有它自己的内存空间和系统资源
+
+## 线程
+
+线程：是进程中的单个顺序控制流，是一条执行路径
+
+- 单线程：一个进程如果只有一条执行路径，则称为单线程程序
+- 多线程：一个进程如果有多条执行路径，则称为多线程程序
+
+## 多线程的实现方式
+
+方式1：继承Thread类
+
+- 定义一个MyThread继承Thread类
+- 在MyThread类中重写run方法
+- 创建MyThread类的对象
+- 启动线程
+
+两个问题
+
+- 为什么重写run方法
+  - 因为run（）是用来封装被线程执行的代码
+- run（）和start（）方式的区别
+  - run（）：封装线程执行的代码，直接调用，相当于普通方法的调用
+  - start（）：启动线程；由JVM调用此线程的Run方法
+
+```java
+public class MyThread extends Thread{
+    @Override
+    public void run () {
+        for(int i = 0;i <1000;i++){
+            System.out.println (i);
+        }
+    }
+}
+public class Demo {
+    public static void main (String[] args) {
+        MyThread mt1 = new MyThread ();
+        MyThread mt2 = new MyThread ();
+
+//        mt1.run ();
+//        mt2.run ();
+
+        //void start() 导致此线程开始执行，Java虚拟机调用此run方法
+        mt1.start ();
+        mt2.start ();
+    }
+}
+```
+
+## 设置和获取线程名称
+
+Thread类中设置和获取线程名称的方法
+
+- void setName（String name）：将此线程的名称更改为等于参数name
+- String getName（）：返回此线程的名称
+
+如果获取main（）方法所在的线程名称
+
+- public static Thread currentThread（）：返回对当前正在执行的线程对象的引用
+
+```java
+public class MyThread extends Thread{
+
+    public MyThread() {};
+
+    public MyThread(String name){//重写
+        super(name);
+    }
+    @Override
+    public void run () {
+        for(int i = 0;i <1000;i++){
+            System.out.println (getName()+":"+i);
+        }
+    }
+}
+public class Demo {
+    public static void main (String[] args) {
+//        MyThread mt1 = new MyThread ();
+//        MyThread mt2 = new MyThread ();
+//
+//        //void setName(String name)：将此线程的名称更改为等于参数name
+//        mt1.setName ("飞机");
+//        mt1.setName ("高铁");
+//        mt1.start ();
+//        mt2.start ();
+
+        //static Thread currentThread() 返回对当前正在执行的线程对象的引用
+        System.out.println (Thread.currentThread().getName ());//输出main，是main线程
+    }
+}
+```
+
+## 线程调度
+
+线程有两种调度模型
+
+- 分时调度模型：所有线程轮流使用CPU的使用权，平均分配每个线程占用CPU的时间片
+- 抢占式调度模型：优先让优先级高的线程使用CPU，如果线程的优先级相同，那么会随机选择一个，优先级高的线程获取的CPU时间片相对多一些
+
+Java使用的是抢占式调度模型
+
+假如计算机只有一个CPU，那么CPU在某一个时刻只能执行一条指令，线程只有得到CPU的时间片，也就是使用权，才可以执行命令。所以说多线程程序的执行是有随机性的，因为谁先抢到CPU的使用权是不一定的
+
+Thread类中设置和获取线程优先级方法
+
+- public final int getPriority() ：返回此线程的优先级
+- public final void setPrioity(int newPriorty) ：更改此线程的优先级
+
+线程默认优先级是5；线程优先级的范围是1-10；
+
+线程优先级高仅仅代表线程获取的CPU时间片的几率高，但是要在次数比较多，或者多次运行的时候才能看出来效果
+
+```java
+public class Demo {
+    public static void main (String[] args) {
+        MyThread mt1 = new MyThread ();
+        MyThread mt2 = new MyThread ();
+        MyThread mt3 = new MyThread ();
+
+        mt1.setName ("高铁");
+        mt2.setName ("飞机");
+        mt3.setName ("汽车");
+
+        //public final int getPriority() ：返回此线程的优先级
+//        System.out.println (mt1.getPriority ());//5
+//        System.out.println (mt2.getPriority ());//5
+//        System.out.println (mt3.getPriority ());//5
+        //线程默认优先级是5
+
+        //public final void setPrioity(int newPriorty) ：更改此线程的优先级
+//        mt1.setPriority (10000);异常
+//        System.out.println (Thread.MAX_PRIORITY);//默认是10
+//        System.out.println (Thread.MIN_PRIORITY);//默认是1
+//        System.out.println (Thread.NORM_PRIORITY);//默认是5
+
+        //设置正确的优先级
+        mt1.setPriority (5);
+        mt2.setPriority (10);
+        mt3.setPriority (1);
+
+        mt1.start ();
+        mt2.start ();
+        mt3.start ();
+    }
+}
+```
+
+## 线程控制
+
+static void sleep（long millis）使当前正在执行的线程停留（暂停执行）指定的毫秒数
+
+void join（）等待这个线程死亡
+
+void setDeamon（boolean on）将此线程标记为守护线程，当运行的线程都是守护线程时，Java虚拟机（JVM）将退出
+
+```java
+public class ThreadSleep extends Thread{
+    @Override
+    public void run () {
+        for( int i = 0;i<100;i++){
+            System.out.println (getName ()+","+i);
+            try {
+                Thread.sleep (1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace ();
+            }
+        }
+    }
+}
+
+public class ThreadSleepDemo {
+    public static void main (String[] args) {
+        ThreadSleep ts1 = new ThreadSleep ();
+        ThreadSleep ts2 = new ThreadSleep ();
+        ThreadSleep ts3 = new ThreadSleep ();
+
+        ts1.setName ("线程1");
+        ts2.setName ("线程2");
+        ts3.setName ("线程3");
+
+        ts1.start ();
+        ts2.start ();
+        ts3.start ();
+    }
+}
+
+public class ThreadJoinDemo {
+    public static void main (String[] args) {
+        ThreadJoin tj1 = new ThreadJoin ();
+        ThreadJoin tj2 = new ThreadJoin ();
+        ThreadJoin tj3 = new ThreadJoin ();
+
+        tj1.setName ("线程1");
+        tj2.setName ("线程2");
+        tj3.setName ("线程3");
+
+        tj1.start ();
+        try {
+            tj1.join ();
+        } catch (InterruptedException e) {
+            e.printStackTrace ();
+        }
+        tj2.start ();
+        tj3.start ();
+    }
+}
+
+public class ThreadDeamonDemo{
+    public static void main (String[] args) {
+        ThreadDeamon td1 = new ThreadDeamon ();
+        ThreadDeamon td2 = new ThreadDeamon ();
+        ThreadDeamon td3 = new ThreadDeamon ();
+
+        td1.setName ("线程1");
+        td2.setName ("线程2");
+        td3.setName ("线程3");
+
+        //设置主线程为线程1
+        Thread.currentThread ().setName ("线程1");
+
+        //设置守护线程
+        td1.setDaemon (true);
+        td2.setDaemon (true);
+
+        td1.start ();
+        td2.start ();
+        td3.start ();
+
+        for(int i  = 0;i<10;i++){
+            System.out.println (Thread.currentThread ().getName ()+","+i);
+        }
+
+    }
+}
+
+```
