@@ -7461,3 +7461,30 @@ IP地址分为两大类
 ## 特殊IP地址
 
 - 127.0.0.1：是回送地址，可以代表本机地址，一般用来测试
+
+## InetAddress使用
+
+Java提供了一个类InetAddress对IP地址的获取和操作
+
+InetAddress：此类表示Internet协议（IP）地址
+
+- static InetAddress getByName(String host)：确定主机名称的IP地址，主机名称可以是机器名称，也可以是IP地址
+- String getHostName() ：获取该IP地址的主机名
+- String getHostAddress()：返回文本显示中的IP地址字符串
+
+```java
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+public class Demo {
+    public static void main (String[] args) throws UnknownHostException {
+        //static InetAddress getByName(String host)：确定主机名称的IP地址，主机名称可以是机器名称，也可以是IP地址
+        InetAddress address = InetAddress.getByName ("192.168.1.66");
+        //- String getHostName() ：获取该IP地址的主机名
+        String name = address.getHostName ();
+        // - String getHostAddress()：返回文本显示中的IP地址字符串
+        String ip = address.getHostAddress ();
+        System.out.println (name+","+ip);
+    }
+}
+```
