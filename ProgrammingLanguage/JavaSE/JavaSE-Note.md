@@ -7598,3 +7598,74 @@ public class Demo {
     }
 }
 ```
+
+## TCP发送数据
+
+TCP通信协议是一种可靠的网络协议，它在通信的两端各建立一个Socket对象，从而在通信的两端形成网络虚拟链路， 一旦建立了虚拟的网络链路，两端的程序就可以通过虚拟链路进行通信。
+
+Java对基于TCP协议的网络提供了封装，使用Socket对象来代表两端的通信接口，并通过Socket产生IO流来进行网络通信
+
+Java为客户端提供了Socket类，为服务器端提供了ServerSocket类
+
+发送数据步骤
+
+1.创建客户端的Socket对象
+
+2.获取输出流，写数据
+
+3.释放资源
+
+```java
+package MyPackets;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+//        Socket s = new Socket (InetAddress.getByName ("192.168.1.66"),10000);
+        Socket s = new Socket ("192.168.1.66",10000);
+
+        //获取输出流，写数据
+        OutputStream os = s.getOutputStream ();
+        os.write ("TCP我来了".getBytes ());
+        s.close ();
+    }
+}
+```
+
+## TCP接收数据
+
+```java
+package MyPackets;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        ServerSocket ss = new ServerSocket (10000);
+
+        Socket s = ss.accept ();
+
+        InputStream is = s.getInputStream ();
+
+        byte[] bys = new byte[1024];
+
+        int len = is.read (bys);
+
+        String date = new String (bys,0,len);
+
+        System.out.println ("数据是"+date);
+
+        s.close ();
+        ss.close ();
+
+
+    }
+}
+```
