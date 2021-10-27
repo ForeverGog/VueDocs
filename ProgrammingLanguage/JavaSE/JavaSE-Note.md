@@ -7488,3 +7488,113 @@ public class Demo {
     }
 }
 ```
+
+# 协议
+
+## TCP协议
+
+- 传输控制协议（Transmission Control Protocol）
+- TCP协议是面向连接的通信协议，即传输数据前，在发送端和接收端建立逻辑连接，然后再传输数据。它提供了两台计算机之间可靠无差错的数据传输，在TCP连接中必须要明确客户端和服务器端，由客户端向服务器端发出连接请求，每次连接的创建需要经过“三次握手”
+- 三次握手：TCP协议中，在发送数据的准备阶段，客户端与服务器之间的三次交互，以保证连接的可靠
+  - 第一次握手：客户端向服务器端发出连接请求，等待服务器确认
+  - 第二次握手：服务器向客户端回送一个响应，通知客户端收到了连接请求
+  - 第三次握手：客户端再次向服务器端发送确认信息，确认连接
+- 完成三次握手，建立连接后，客户端和服务器端可以进行数据传输，由于这种面向连接的特性。TCP协议可以保证传输数据的安全，所以应用广泛：上传文件，下载文件，浏览网页等
+
+## UDP通信原理
+
+UDP协议是一种不可靠的网络协议，它在通信的两端各建立一个Socket对象，但是这两个Socket对象只是发送，接收数据的对象
+
+因此，对于基于UDP协议通信双方而言，没有所谓的客户端和服务器的概念
+
+Java提供了DatagramSocket类作为基于UDP协议的Socket
+
+## UDP发送数据
+
+发送数据的步骤
+
+1.创建发送端Socket对象（DatagramSocket）
+
+DatagramSocet（）
+
+2.创建数据并且打包
+
+DatagramPacket（byte[] buf,int length,InetAddress adress , int port）
+
+3.调用DatagramSocket的方法发送数据
+
+void sent(DatagramPacket dp)
+
+4.关闭发送端
+
+void close()
+
+```java
+import java.io.IOException;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        DatagramSocket ds = new DatagramSocket ();
+
+        byte[] bys = "hello,udp我是你爹".getBytes();
+//        int length = bys.length;
+//        InetAddress address = InetAddress.getByName ("192.168.1.66");
+//        int port = 10086;
+//        DatagramPacket dp = new DatagramPacket (bys,length,address,port);
+        DatagramPacket dp = new DatagramPacket (bys,bys.length,InetAddress.getByName ("192.168.1.66"),10086);
+        ds.send (dp);
+        ds.close ();
+    }
+}
+```
+
+## UDP接收数据
+
+1.创建接收端的Socket对象（DatagramSocket）
+
+DatagramSocket（int port）
+
+2.创建一个数据包，用于接收数据
+
+DatagramPacket（byte[] buf ,int length）
+
+3.调用DatagramSocket对象的方法接收数据
+
+void receive (DatagramPacket p)
+
+4.解析数据包
+
+byte[] getData()
+
+int getLength()
+
+5.关闭接收端
+
+void close()
+
+```java
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
+
+public class Demo {
+    public static void main (String[] args) throws IOException {
+        DatagramSocket ds = new DatagramSocket (10086);
+
+        byte[] bys = new byte[1024];
+        DatagramPacket dp = new DatagramPacket (bys,bys.length);
+
+        ds.receive (dp);
+
+//        byte[] data = dp.getData ();
+//        String dateString = new String (data);
+//        System.out.println ("数据是"+dateString);
+        System.out.println ("数据是:"+new String(dp.getData (),0,dp.getLength ()));
+
+        ds.close ();
+    }
+}
+```
