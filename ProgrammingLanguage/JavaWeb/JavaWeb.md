@@ -86,13 +86,13 @@ System.out.println (cls1==cls3);//比的是内存地址
 
   1.获取成员变量们
 
-  ​	 Field[ ] getFields( )
+  ​	 Field[ ] getFields( ) ：用来获取所有public修饰的成员变量
 
-  ​	 Field getField（String name）
+  ​	 Field getField（String name）：用来获取指定名称的public修饰的成员变量
 
   
 
-  ​	 Field[ ] getDeclaredFields( )
+  ​	 Field[ ] getDeclaredFields( )：不考虑访问权限修饰符，获取所有成员变量
 
   ​     Field getDeclaredField(String name )
 
@@ -100,7 +100,7 @@ System.out.println (cls1==cls3);//比的是内存地址
 
   2.获取构造方法们
 
-  ​	 Constructor<?>[ ] getConstructors( )
+  ​	 Constructor<?>[ ] getConstructors( ) 获取所有的成员变量，不考虑修饰符
 
   ​	 Constructor<T> getConstructor(<类<?>... parameterTypes）
 
@@ -127,5 +127,17 @@ System.out.println (cls1==cls3);//比的是内存地址
   4.获取类名
 
   ​	 String getName( )
+
+- Field：成员变量
+  - 操作：
+    - 1.设置值
+      - void set（Object obj , Object value）
+    - 2.获取值
+      - get(Object obj)
+    - 3.暴力反射，忽略访问权限修饰符的安全检查
+      - setAccessible(true)
+- Constructor：构造方法
+  - 创建对象：
+    - T newInstance（Object......initargs）
 
 # 注解
