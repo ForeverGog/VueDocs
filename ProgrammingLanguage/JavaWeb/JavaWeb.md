@@ -174,7 +174,68 @@ System.out.println (cls1==cls3);//比的是内存地址
 
 JDK中预定义的一些注解
 
+- @Override ：检测被该注解标注的方法是否是继承自父类（父接口）的
+- @Deprecated ：将该注解标注的内容，已过时
+- @SuppressWarmings ：压制警告
+  - 一般传递参数 “all” @SuppressWarnings ("all")
+
 自定义注解
 
-在程序使用（）注解s
+- 格式：
+
+  - 元注解
+  - public @interface 注解名称
+
+- 本质：本质上就是一个接口interface，该接口默认继承Annotation
+
+  - public interface MyAnno extends java.lang.annotation.Annotation {
+
+    - 属性列表
+
+       }
+
+- 属性：接口中可以定义的成员方法
+
+  - 要求：
+    - 1.属性的返回值类型由下列取值
+      - 基本数据类型
+      - 字符串String
+      - 枚举
+      - 注解
+      - 以上类型的数组
+    - 2.定义了属性，使用时需要给属性赋值
+      - 如果定义属性时，使用default关键字，给属性默认初始化值则使用注解时可以不用赋值
+      - 如果只有一个属性需要赋值，并且属性名称为value，则value直接省略，直接写值即可
+      - 数组赋值时，使用{ }进行包裹，如果数组就1个值，大括号可以不写
+
+- 元注解：用于描述注解的注解
+
+  - @Target：描述注解能够作用的位置
+
+    - ElementType取值：
+      - TYPE：可以作用于类上
+      - METHOD ：可以作用于方法上
+      - FIELD：可以作用于成员变量上
+
+  - @Retention：描述注解被保留的阶段
+
+    - ```java
+      @Retention (RetentionPolicy.RUNTIME)：当前被描述的注解，会保留到Class字节码文件中，被JVM读取到，一般用RUNTIME
+      ```
+
+  - @Documentd：描述注解是否被抽取到API文档中
+
+  - @Inherited：描述注解是否被子类继承
+
+在程序使用（解析）注解：获取注解中定义的属性值
+
+​	1.获取注解定义的位置的对象（Class，Method，Field）
+
+​	2.获取指定的注解
+
+- getAnnotation（Class）
+
+
+
+​	3.调用注解中的抽象方法获取配置的属性值
 
