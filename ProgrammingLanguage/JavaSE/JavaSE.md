@@ -4886,7 +4886,7 @@ public class Demo{
 
 - 不包含重复元素
 
-```
+```java
 import java.util.HashSet;
 import java.util.Set;
 
@@ -5237,7 +5237,11 @@ public class Demo {
 泛型类定义格式
 
 - 格式：修饰符class 类名<类型>{ }
-- 例如：public class Generic<T> { }
+
+```java
+例如：public class Generic<T> { }
+```
+
 - 此处的T可以随便写，常见如T/E/K/V等形式通常表示泛型
 
 ```java
@@ -5311,8 +5315,10 @@ public class Demo {
 
 泛型方法定义格式：
 
+```java
 - 格式：修饰符<类型>返回值类型 方法名（类型 变量名）{}
 - 例如：public<T> void show(T t){ }
+```
 
 ```java
 //public class Generic {
@@ -5363,7 +5369,10 @@ public class GenericDemo {
 泛型接口定义格式
 
 - 格式：修饰符 interface 接口名<类型>{ }
-- 例如：public interface Generic<T> { }
+
+  ```java
+  例如：public interface Generic<T> { }
+  ```
 
 ```java
 public interface Generic<T> {
