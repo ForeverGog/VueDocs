@@ -2,6 +2,8 @@
 
 ---
 
+sidebar_position: 2
+
 sidebar_label: 'JavaSE' 
 
 ---
@@ -2078,6 +2080,7 @@ public class StringDemo {
 - 集合类的特点：提供一种存储空间可变的模型，存储的数据容量是可以发生改变的
 - 集合类有很多，ArrayList是其中之一
 
+```java
 ArrayList<E>:
 
 - 可调整大小的数组实现
@@ -2087,6 +2090,7 @@ ArrayList<E>:
 
 - 在出现E的地方引用数据类型转换即可
 - ArrayList<String>,ArrayList<Student>
+```
 
 ## ArrayList构造和添加
 
@@ -2228,7 +2232,7 @@ super关键字用法和this关键字的用法相似
 - 也可以使用this(……)访问本类的构造，this.成员方法(……)
 - 或者super(……）访问父类的构造，this.父类方法(……）
 
-```lua
+```java
 public class Dad {
     public int age = 20;
 }
@@ -4386,10 +4390,14 @@ public class Demo{
 
 ## Collection 集合的遍历
 
+```java
 Iterator:迭代器，集合的专用遍历方式
 
 - Iterator<E> iterator() ：返回此集合中元素的容器，通过集合的iterator()方法得到
 - 迭代器是通过集合的iterator()方法得到的，所以我们说他是依赖于集合而存在的
+```
+
+
 
 Iterator中的常用方法
 
@@ -5193,6 +5201,7 @@ public class Demo {
 
 这种参数类型可以用在类，方法和接口中，分别被称为泛型类、泛型方法、泛型接口
 
+```java
 - <类型>：指定一种类型的格式，这里的类型可以看成形参
 
 - <类型1,类型2……>：指定多种类型的格式，多种类型之间用逗号隔开，这里的类型可以看成形参
@@ -5200,37 +5209,40 @@ public class Demo {
 - 将来具体调用的时候给定的类型可以看成实参，并且实参的类型只能是引用数据类型
 
 - 好处：把运行期间的问题提前到了编译期间，避免了强制类型转化
+```
 
-  ```java
-  import java.util.ArrayList;
-  import java.util.Collection;
-  import java.util.Iterator;
-  
-  public class Demo {
-      public static void main (String[] args) {
-  
-          //创建集合对象
-  //        Collection cl = new ArrayList ();
-          Collection<String> cl = new ArrayList<String> ();
-          //添加元素
-          cl.add ("hello");
-          cl.add ("world");
-          cl.add ("java");
-  //        cl.add (100);
-          //遍历集合
-  //        Iterator iterator = cl.iterator ();
-          Iterator<String> iterator = cl.iterator ();
-  
-          while(iterator.hasNext ()){
-  //            Object next = iterator.next ();
-  //            System.out.println (next);
-  //            String s = (String) iterator.next ();//ClassCastException
-              String next = iterator.next ();
-              System.out.println (next);
-          }
-      }
-  }
-  ```
+
+
+```java
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+public class Demo {
+    public static void main (String[] args) {
+
+        //创建集合对象
+//        Collection cl = new ArrayList ();
+        Collection<String> cl = new ArrayList<String> ();
+        //添加元素
+        cl.add ("hello");
+        cl.add ("world");
+        cl.add ("java");
+//        cl.add (100);
+        //遍历集合
+//        Iterator iterator = cl.iterator ();
+        Iterator<String> iterator = cl.iterator ();
+
+        while(iterator.hasNext ()){
+//            Object next = iterator.next ();
+//            System.out.println (next);
+//            String s = (String) iterator.next ();//ClassCastException
+            String next = iterator.next ();
+            System.out.println (next);
+        }
+    }
+}
+```
 
 ## 泛型类
 
@@ -5368,11 +5380,13 @@ public class GenericDemo {
 
 泛型接口定义格式
 
-- 格式：修饰符 interface 接口名<类型>{ }
+```java
+格式：修饰符 interface 接口名<类型>{ }
+```
 
-  ```java
-  例如：public interface Generic<T> { }
-  ```
+```java
+例如：public interface Generic<T> { }
+```
 
 ```java
 public interface Generic<T> {
@@ -5404,23 +5418,35 @@ public class GenericDemo {
 
 为了表示各种泛型List父类，可以使用类型通配符
 
+```java
 - 类型通配符：<?>
 
 - List<?>：表示元素类型未知的List，它的元素可以匹配任何的类型
 
 - 这种带通配符的List仅表示它是各种泛型List的父类，并不能把元素添加其中
+```
 
-  
 
+
+
+
+```java
 如果说不希望List<?>是任何泛型List的父类，只希望它代表某一类泛型List的父类，可以使用类型通配符的上限
 
 - 类型通配符上限：<?extends 类型>
 - List<? extends Number>：它表示的类型是Number或者其它子型
+```
 
+
+
+```java
 除了可以指定类型通配符的上限，也可以指定类型通配符的下限
 
 - 类型通配符的下限：<?super 类型>
 - List<? super Number>：它表示的类型是Number或者其父类型
+```
+
+
 
 ```java
 import java.util.ArrayList;
@@ -5484,6 +5510,7 @@ public class GenericDemo {
 
 ## 可变参数的使用
 
+```java
 Arrays工具类中有一个静态方法：
 
 - public static <T> List <T> asList(T...a)：返回由指定数组支持的固定大小的列表
@@ -5499,6 +5526,9 @@ Set接口中有一个静态方法：
 - public static <E>Set<E> of(E...elements)：返回一个包含任意数量元素的不可变集合
 - 在给元素的时候，不能给重复的元素
 - 返回类集合不能做自身操作，没有修改的方法
+```
+
+
 
 ```java
 import java.util.Arrays;
@@ -5536,8 +5566,12 @@ public class Demo {
 
 ## Map集合概述和特点
 
+```java
 - Interface Map<K,V> K：键的类型；V：值的类型
 - 将键映射到值的对象；不能包含重复的键；每个键最多映射一个值
+```
+
+
 
 创建Map集合的对象
 
@@ -5592,10 +5626,14 @@ public class Demo {
 
 ## Map集合的获取功能
 
+```java
 - V get(Obejct key) 根据键 获取值
 - Set<K> keySet() 获取所有键的集合
 - Collection<V> values() 获取所有值的集合
 - Set<Map.Entry<K,V>>entrySet() 获取所有键值对对象的集合
+```
+
+
 
 ```java
 import java.util.Collection;
@@ -5656,12 +5694,16 @@ public class Demo {
 
 ## Map集合的遍历-方式二
 
+```java
 - 获取所有Key值对对象的集合
-  - Set<Map.Entry<K,V>>entrySet()：获取所有Key对对象的集合
+- Set<Map.Entry<K,V>>entrySet()：获取所有Key对对象的集合
 - 用增强for获得每一个Map.Entry
 - 根据Key值的对象获得Key和Value
-  - 用getKey()获得Key
-  - 用getValue()获得Value
+- 用getKey()获得Key
+- 用getValue()获得Value
+```
+
+
 
 ```java
 import java.util.HashMap;
@@ -5696,9 +5738,13 @@ public class Demo {
 
 ## Collections类的常用方法
 
+```java
 - public static <T extends Comparable<? super T>> void sort(List<T> list)：将指定的列表按升序排列
 - public static void reverse(List<?> list)：反转指定列表中的元素的顺序
 - public static void shuffle(List<?> list)：使用默认的随机源随机排列指定的列表
+```
+
+
 
 ```java
 import java.util.ArrayList;
