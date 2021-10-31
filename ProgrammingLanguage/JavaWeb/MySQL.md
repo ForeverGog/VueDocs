@@ -23,14 +23,22 @@
 
 ## MySQL登录
 
+```mysql
 1. mysql -uroot -p密码
 2. mysql -hip -uroot -p连接目标的密码
 3. mysql --host=ip --user=root --password=连接目标的密码
+```
+
+
 
 ## MYSQL退出
 
+```mysql
 1. exit
 2. quit
+```
+
+
 
 # SQL
 
@@ -52,9 +60,14 @@ Structred Query Language：结构化查询语言
 
 4.3种注释
 
-​	单行注释：--注释内容 或 # 注释内容（mysql 特有） 
+```mysql
+	单行注释：--注释内容 
+或 # 注释内容（mysql 特有） 
 
 ​	多行注释：/* 注释 */
+```
+
+
 
 ## SQL分类
 
@@ -71,45 +84,70 @@ Structred Query Language：结构化查询语言
 
 ## 操作数据库：CRUD
 
-1.C（Create）：创建
+​		C（Create）：创建
 
+```mysql
 - 创建数据库
   - create database 数据库名称
 - 创建数据库，判断是否存在
   - create database if not exists 数据库名称；
 - 创建数据库，并且指定字符集
   - create database 数据库名称 character set 字符集名；
-
 - 综合：创建db4数据库，判断是否存在，并判断字符集为gbk
   - create database if not exists db4 character set gbk；
+```
 
-2.R（Retrieve）：查询
+​		R（Retrieve）：查询
 
 - 查询所有数据库名称：
-  - show databases；
-- 查询某个数据库的字符集：查看某个数据库的创建语句
-  - show create database 数据库名字；
 
-3.U（Update）：修改
+  ```mysql
+  show databases；
+  ```
+
+- 查询某个数据库的字符集：查看某个数据库的创建语句
+
+  ```mysql
+  show create database 数据库名字；
+  ```
+
+  U（Update）：修改
 
 - 修改数据库的字符集
-  - alter database 数据库名称 character set 字符集名称
 
-4.D（Detele）：删除
+  ```mysql
+  - - alter database 数据库名称 character set 字符集名称
+  ```
+
+  D（Detele）：删除
 
 - 删除数据库
-  - drop database 数据库名称；
-- 判断数据库是否存在，存在再删除
-  - drop database if exists 数据库名称；
 
-5.使用数据库
+  ```mysql
+  - - drop database 数据库名称；
+  ```
+
+- 判断数据库是否存在，存在再删除
+
+  ```mysql
+  - - drop database if exists 数据库名称;
+  ```
+
+  5.使用数据库
 
 - 查询当前正在使用的数据库名称
-  - select database（）；
+
+  ```mysql
+  select database();
+  ```
+
 - 使用数据库
-  - use 数据库名称；
 
+  ```mysql
+  use 数据库名称;
+  ```
 
+  
 
 ## 操作表：CRUD
 
@@ -117,17 +155,19 @@ Structred Query Language：结构化查询语言
 
   - 语法：
 
+    ```mysql
     create table 表明（
-
-    ​	列名1 数据类型1，
-
-    ​	列名2 数据类型2，
-
-    ​	列名... 数据类型...，
-
-    ​	列名n 数据类型n
-
+    
+    	列名1 数据类型1，
+    
+    	列名2 数据类型2，
+    
+    	列名... 数据类型...，
+    
+    	列名n 数据类型n
+    
     ）；
+    ```
 
     注意，最后一列不需要加逗号，
 
@@ -160,51 +200,145 @@ Structred Query Language：结构化查询语言
 
 - 2.R（Retrieve）：查询
 
-  - 查询某个数据中所有表的名称
-    - show tables；
-  - 查询表结构
-    - desc 表名；
+  查询某个数据中所有表的名称
 
-- 3.U（Update）：修改
+  ```mysql
+  show tables；
+  ```
 
-  - 1. 修改表名
-       1. alter table 表名 rename to 新表名；
-    2. 修改表的字符集
-       1. alter table 表名 character set 字符集名字；
-    3. 添加一列
-       1. alter table 表名 add 列名 数据类型；
-    4. 修改列 名称 类型
-       1. alter table 表名 change 列名 新列名 新数据类型；
-       2. alter table 表名 modify 列名 新数据类型；
-    5. 删除列
-       1. alter table 表名 drop 列名；
+  查询表结构
+
+  ```mysql
+  desc 表名；
+  ```
+
+  3.U（Update）：修改
+
+  ```mysql
+  1. 修改表名
+     1. alter table 表名 rename to 新表名;
+  2. 修改表的字符集
+     1. alter table 表名 character set 字符集名字;
+  3. 添加一列
+     1. alter table 表名 add 列名 数据类型;
+  4. 修改列 名称 类型
+     1. alter table 表名 change 列名 新列名 新数据类型;
+     2. alter table 表名 modify 列名 新数据类型;
+  5. 删除列
+     1. alter table 表名 drop 列名;
+  ```
 
 - 4.D（Detele）：删除
 
-  - drop table 表名；
-  - drop table if exists 表名
+  ```mysql
+  - drop table 表名;
+  - drop table if exists 表名;
+  ```
+
+  
 
 # DML：曾删改表中的数据
 
-1. 添加数据：
+## 添加数据
 
-   - insert into 表名（列名1，列名2，.......列名n） values（值1，值2，......值n）；
+```mysql
+insert into 表名（列名1，列名2，.......列名n） values（值1，值2，......值n）;
+```
 
-   - 注意：
-     - 1.列名和值要一一对应；
-     - 2.如果表名后，不定义列名，则默认给所有列添加值
-       - insert into 表名 values（值1，值2，......值n）；
-     - 3.除了数字类型，其它类型需要用（单引双引都可以）引起来；
+- 注意：
 
-2. 删除数据：
+- - 1.列名和值要一一对应；
+  - 2.如果表名后，不定义列名，则默认给所有列添加值
+    - insert into 表名 values（值1，值2，......值n）；
+  - 3.除了数字类型，其它类型需要用（单引双引都可以）引起来；
 
-3. 修改数据：
+## 删除数据
 
+- 删除：
 
+```mysql
+delete from 表名 [where 条件];
+delete from student where id=1;	
+```
+
+- 注意：如果不加条件，则删除表中所有记录
+
+- 如果要删除所有记录，有两种操作方法
+
+  ```mysql
+  1.detele from 表名; #不推荐使用，有多少条记录会执行多少次删除的操作
+  2.TRUNCATE TABLE 表名; #先删除表，再创建一张一样的表
+  ```
+
+## 修改数据
+
+1. 语法：
+
+```mysql
+update 表名 set 列名1 = 值1,列名2 = 值2,......[where 条件];
+update 表名 set age = 17 where id=1;
+```
+
+注意：如果不加条件，则会将表中所有数据修改
 
 # DQL：查询表中记录
 
-```sql
+## 语法
+
+```mysql
 select * from 表名;
+```
+
+```mysql
+select
+	字段列表
+from
+	表名列表
+where
+	条件列表
+group by
+	分组字段
+having
+	分组之后的条件限定
+order by
+	排序
+limit
+ 	分页限定
+```
+
+## 基础查询
+
+### 多个字段查询
+
+```mysql
+select 字段名1,字段名2,... from 表名;
+```
+
+- 注意：如果查询所有字段，则可以使用*号来代替字段的内容。
+
+### 去除重复
+
+```mysql
+distinct
+```
+
+### 计算列
+
+- 一般可以使用四则运算计算一些列的值
+
+- ```mysql
+  ifnull(表达式1,表达式2);
+  ```
+
+- 表达式1：哪个字段需判断是否为null，null参与的运算一切为null。
+
+- 如果该字段为null后的替换值。
+
+### 起别名
+
+- as关键字，也可以省略，加一个空格就行
+
+```mysql
+SELECT NAME,math english,math+IFNULL(english,0) AS 总分 FROM student;
 ```
 
