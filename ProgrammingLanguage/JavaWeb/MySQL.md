@@ -21,8 +21,6 @@
   - 表：文件
   - 数据：数据
 
-
-
 # SQL
 
 ## SQL概念
@@ -100,4 +98,52 @@ Structred Query Language：结构化查询语言
 - 使用数据库
   - use 数据库名称；
 
-s
+
+
+## 操作表：CRUD
+
+- 1.C（Create）：创建
+
+  - 语法：
+
+    create table 表明（
+
+    ​	列名1 数据类型1，
+
+    ​	列名2 数据类型2，
+
+    ​	列名... 数据类型...，
+
+    ​	列名n 数据类型n
+
+    ）；
+
+    注意，最后一列不需要加逗号，
+
+  - 数据库常用类型
+
+  - int：整数类型
+
+    - age，int
+
+  - double：整数类型
+
+    - score，double
+
+  - date：日期，只包含年月日，yyyy-MM-dd
+
+  - datetime：日期包含年月日时分喵，yyyy-MM-dd HH:mm:ss
+
+  - timestamp：时间错类型 包含年月日时分秒
+
+- 2.R（Retrieve）：查询
+
+  - 查询某个数据中所有表的名称
+    - show tables；
+  - 查询表结构
+    - desc 表名；
+
+- 3.U（Update）：修改
+
+- 4.D（Detele）：删除
+
