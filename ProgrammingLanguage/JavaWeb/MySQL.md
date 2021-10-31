@@ -1,4 +1,21 @@
-# MySQL
+---
+sidebar_position: 4
+sidebar_label: 'JavaWeb-MySQL'
+---
+
+# 前言
+
+- 这是一个在JavaWeb过程中的MySQL，从0到1的学习笔记。
+  - 因此，这篇Notes更适合在学习JavaWeb的过程中进行阅读
+  - 更加全面的MySQL文章会在**"数据管理"**大纲下进行发布，因此这份MarkDown命名为JavaWeb-MySQL
+
+- 内容主要为Base of MySQL
+  - 概括为简单的CRUD基本操作
+- It's more suitable for understanding in learning
+  - 意味着这个Notes更容易帮助学习MySQL基础而不是作为字典查询
+    - 当然，要当字典用也没事，看的懂并且理解最重要，看不懂我也没办法。
+- 更权威的内容在 [这里](https://dev.mysql.com/doc/)，如果您觉得这篇markdown很弱智的话
+- 如果有些问题通过Ctrl+F是解决不了的，[这里](https://www.google.com)一定有正确的解决方案
 
 ## 数据库
 
@@ -23,7 +40,7 @@
 
 ## MySQL登录
 
-```mysql
+```sql
 1. mysql -uroot -p密码
 2. mysql -hip -uroot -p连接目标的密码
 3. mysql --host=ip --user=root --password=连接目标的密码
@@ -33,7 +50,7 @@
 
 ## MYSQL退出
 
-```mysql
+```sql
 1. exit
 2. quit
 ```
@@ -60,11 +77,11 @@ Structred Query Language：结构化查询语言
 
 4.3种注释
 
-```mysql
-	单行注释：--注释内容 
+```sql
+单行注释：--注释内容 
 或 # 注释内容（mysql 特有） 
 
-​	多行注释：/* 注释 */
+多行注释：/* 注释 */
 ```
 
 
@@ -86,7 +103,7 @@ Structred Query Language：结构化查询语言
 
 ​		C（Create）：创建
 
-```mysql
+```sql
 - 创建数据库
   - create database 数据库名称
 - 创建数据库，判断是否存在
@@ -101,13 +118,13 @@ Structred Query Language：结构化查询语言
 
 - 查询所有数据库名称：
 
-  ```mysql
+  ```sql
   show databases；
   ```
 
 - 查询某个数据库的字符集：查看某个数据库的创建语句
 
-  ```mysql
+  ```sql
   show create database 数据库名字；
   ```
 
@@ -115,7 +132,7 @@ Structred Query Language：结构化查询语言
 
 - 修改数据库的字符集
 
-  ```mysql
+  ```sql
   - - alter database 数据库名称 character set 字符集名称
   ```
 
@@ -123,13 +140,13 @@ Structred Query Language：结构化查询语言
 
 - 删除数据库
 
-  ```mysql
+  ```sql
   - - drop database 数据库名称；
   ```
 
 - 判断数据库是否存在，存在再删除
 
-  ```mysql
+  ```sql
   - - drop database if exists 数据库名称;
   ```
 
@@ -137,13 +154,13 @@ Structred Query Language：结构化查询语言
 
 - 查询当前正在使用的数据库名称
 
-  ```mysql
+  ```sql
   select database();
   ```
 
 - 使用数据库
 
-  ```mysql
+  ```sql
   use 数据库名称;
   ```
 
@@ -155,7 +172,7 @@ Structred Query Language：结构化查询语言
 
   - 语法：
 
-    ```mysql
+    ```sql
     create table 表明（
     
     	列名1 数据类型1，
@@ -202,19 +219,19 @@ Structred Query Language：结构化查询语言
 
   查询某个数据中所有表的名称
 
-  ```mysql
+  ```sql
   show tables；
   ```
 
   查询表结构
 
-  ```mysql
+  ```sql
   desc 表名；
   ```
 
   3.U（Update）：修改
 
-  ```mysql
+  ```sql
   1. 修改表名
      1. alter table 表名 rename to 新表名;
   2. 修改表的字符集
@@ -230,7 +247,7 @@ Structred Query Language：结构化查询语言
 
 - 4.D（Detele）：删除
 
-  ```mysql
+  ```sql
   - drop table 表名;
   - drop table if exists 表名;
   ```
@@ -241,7 +258,7 @@ Structred Query Language：结构化查询语言
 
 ## 添加数据
 
-```mysql
+```sql
 insert into 表名（列名1，列名2，.......列名n） values（值1，值2，......值n）;
 ```
 
@@ -256,7 +273,7 @@ insert into 表名（列名1，列名2，.......列名n） values（值1，值2�
 
 - 删除：
 
-```mysql
+```sql
 delete from 表名 [where 条件];
 delete from student where id=1;	
 ```
@@ -265,7 +282,7 @@ delete from student where id=1;
 
 - 如果要删除所有记录，有两种操作方法
 
-  ```mysql
+  ```sql
   1.detele from 表名; #不推荐使用，有多少条记录会执行多少次删除的操作
   2.TRUNCATE TABLE 表名; #先删除表，再创建一张一样的表
   ```
@@ -274,22 +291,22 @@ delete from student where id=1;
 
 1. 语法：
 
-```mysql
+```sql
 update 表名 set 列名1 = 值1,列名2 = 值2,......[where 条件];
 update 表名 set age = 17 where id=1;
 ```
 
 注意：如果不加条件，则会将表中所有数据修改
 
-# DQL：查询表中记录
+# DQL：查询
 
 ## 语法
 
-```mysql
+```sql
 select * from 表名;
 ```
 
-```mysql
+```sql
 select
 	字段列表
 from
@@ -310,7 +327,7 @@ limit
 
 ### 多个字段查询
 
-```mysql
+```sql
 select 字段名1,字段名2,... from 表名;
 ```
 
@@ -318,7 +335,7 @@ select 字段名1,字段名2,... from 表名;
 
 ### 去除重复
 
-```mysql
+```sql
 distinct
 ```
 
@@ -326,7 +343,7 @@ distinct
 
 - 一般可以使用四则运算计算一些列的值
 
-- ```mysql
+- ```sql
   ifnull(表达式1,表达式2);
   ```
 
@@ -338,7 +355,7 @@ distinct
 
 - as关键字，也可以省略，加一个空格就行
 
-```mysql
+```sql
 SELECT NAME,math english,math+IFNULL(english,0) AS 总分 FROM student;
 ```
 
@@ -348,7 +365,7 @@ SELECT NAME,math english,math+IFNULL(english,0) AS 总分 FROM student;
 
 ### 运算符
 
-```mysql
+```sql
 > 、 < 、 <= 、 >= 、 = 、<> :<>在SQL中表示不等于，在MYSQL中可以写!=
 and 或者 && ：与，SQL中建议用and，后者不通用
 or 或者 || ：或
@@ -368,4 +385,131 @@ SELECT * FROM student WHERE english IS NOT NULL;
 LIKE'张%' ：模糊查询
 
 ```
+
+## 查询语句
+
+### 排序查询
+
+- 语法：order by 子句
+
+```sql
+order by 排序字段1 排序方式1,排序字段2 排序方式2..... ;
+```
+
+- 排序方式：
+  - ACS：升序，默认的
+  - DESC：降序
+
+```sql
+SELECT * FROM student ORDER BY math ASC;
+SELECT * FROM student ORDER BY math DESC;
+```
+
+- 如果有多个排序条件，则当前边的条件值一样时，才会判断第二条件
+
+```sql
+SELECT * FROM student ORDER BY math ASC,english DESC;
+```
+
+### 聚合函数
+
+概念：将一列数据作为一个整体，进行纵向计算。按照生活的理解：如果想看表中，数学成绩一列，作为一个整体，得出一个平均分。
+
+主要是用来做列的纵向计算，也就是竖着。
+
+- count：计算数量，个数
+
+```sql
+SELECT COUNT(列名) FROM 表名;
+SELECT COUNT(NAME) FROM student;
+```
+
+- max：计算最大值
+
+```sql
+SELECT MAX(列名) FROM 表名;
+SELECT MAX(math) FROM student;
+```
+
+- min：计算最小值
+
+
+
+- sum：求和
+- avg：计算平均值
+
+注意：聚合函数的计算都是排除了null值的，意味着如果value为null就不会计入统计
+
+当然，你肯定觉得排除null这个行为很傻逼，很脑残，所以有这么两个个方法解决
+
+- 第一个方法，选择非null的列进行找到count，找到主键
+- 第二个方法，count(*)
+
+```sql
+SELECT COUNT(IFNULL(english,0)) FROM student; 
+-- english列中有一个值是NULL，但是你要找到包括NULL的一共的所有数量，
+-- IFNULL(english,0)的意思是，如果english列中，有值为NULL，则用0进行替代
+SELECT COUNT(*) FROM student;
+意思是，这一列数据只要有一列没有值为null，就进行运算
+```
+
+当然= =，听别人说以后去上班，如果MySQL使用*号，也就是星号，用一次扣50块钱工资，不知道真的假的，能不用尽量别用吧，写详细点。
+
+所以这样写
+
+```sql
+SELECT COUNT(english) FROM student;
+-- 这个不会把值为null的计算在内！！！如果想把null值的数量记录在内，记得使用 (IFNULL(列名,0)) 这个格式
+```
+
+
+
+### 分组查询
+
+1.语法
+
+```sql
+group by 分组字段;
+--按照sex分组，分别查询男女同学，math课的平均分
+SELECT sex , AVG(math)FROM student GROUP BY sex;
+--按照sex分组，分别查询男女同学，math课的平均分，以及人数
+SELECT sex , AVG(math),COUNT(id) FROM student GROUP BY sex;
+--按照sex分组，分别查询男女同学，math课的平均分（如果分数低于70，那么不加入分组），以及人数
+SELECT sex , AVG(math),COUNT(id) FROM student WHERE math>70 GROUP BY sex;
+--按照sex分组，分别查询男女同学，math课的平均分（如果分数低于70，那么不加入分组），以及人数，人数要大于2个人
+SELECT sex , AVG(math),COUNT(id) FROM student WHERE math>70 GROUP BY sex HAVING COUNT(id)>2;
+```
+
+2.注意
+
+第一件事：分组之后，查询的字段：分组字段、要么是聚合函数，不能写其它字段，没任何意义
+
+第二件事：where和having的区别？
+
+- where在分组之前进行限定，如果不满足这个条件，则不参与分组
+- having在分组之后进行限定，如果不满足这个条件，则不会被查询出来
+- where后面不可以跟聚合函数，having后面可以进行聚合函数的判断。
+
+```sql
+--按照sex分组，分别查询男女同学，math课的平均分（如果分数低于70，那么不加入分组），以及人数，人数要大于2个人
+SELECT sex , AVG(math),COUNT(id) FROM student WHERE math>70 GROUP BY sex HAVING COUNT(id)>2;
+
+这个count(id)太傻逼了，可以考虑换个写法，比如起个别名
+两个方式都可以
+SELECT sex , AVG(math),COUNT(id) 人数 FROM student WHERE math>70 GROUP BY sex HAVING 人数>2;
+SELECT sex , AVG(math),COUNT(id) AS 人数 FROM student WHERE math>70 GROUP BY sex HAVING 人数>2;
+
+```
+
+
+
+### 分页查询
+
+# 约束
+
+# 多表之间的关系
+
+# 范式
+
+# 数据库的备份和还原
 
