@@ -21,6 +21,17 @@
   - 表：文件
   - 数据：数据
 
+## MySQL登录
+
+1. mysql -uroot -p密码
+2. mysql -hip -uroot -p连接目标的密码
+3. mysql --host=ip --user=root --password=连接目标的密码
+
+## MYSQL退出
+
+1. exit
+2. quit
+
 # SQL
 
 ## SQL概念
@@ -128,13 +139,24 @@ Structred Query Language：结构化查询语言
 
   - double：整数类型
 
-    - score，double
+    - score，double（5，2）：最多有5位数，小数后最多2位数
 
   - date：日期，只包含年月日，yyyy-MM-dd
 
   - datetime：日期包含年月日时分喵，yyyy-MM-dd HH:mm:ss
 
   - timestamp：时间错类型 包含年月日时分秒
+
+    * 如果将来不给时间错字段赋值，或者赋值为null，则默认使用当前系统时间自动赋值
+
+  - varchar：字符串
+
+    - name varchar（20）：最大20个字符
+    - “马牛逼” ：3个字符
+
+  - 复制表：
+
+    - create table 表名 like 被复制的表名；
 
 - 2.R（Retrieve）：查询
 
@@ -145,5 +167,44 @@ Structred Query Language：结构化查询语言
 
 - 3.U（Update）：修改
 
+  - 1. 修改表名
+       1. alter table 表名 rename to 新表名；
+    2. 修改表的字符集
+       1. alter table 表名 character set 字符集名字；
+    3. 添加一列
+       1. alter table 表名 add 列名 数据类型；
+    4. 修改列 名称 类型
+       1. alter table 表名 change 列名 新列名 新数据类型；
+       2. alter table 表名 modify 列名 新数据类型；
+    5. 删除列
+       1. alter table 表名 drop 列名；
+
 - 4.D（Detele）：删除
+
+  - drop table 表名；
+  - drop table if exists 表名
+
+# DML：曾删改表中的数据
+
+1. 添加数据：
+
+   - insert into 表名（列名1，列名2，.......列名n） values（值1，值2，......值n）；
+
+   - 注意：
+     - 1.列名和值要一一对应；
+     - 2.如果表名后，不定义列名，则默认给所有列添加值
+       - insert into 表名 values（值1，值2，......值n）；
+     - 3.除了数字类型，其它类型需要用（单引双引都可以）引起来；
+
+2. 删除数据：
+
+3. 修改数据：
+
+
+
+# DQL：查询表中记录
+
+```sql
+select * from 表名;
+```
 
