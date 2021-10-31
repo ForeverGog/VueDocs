@@ -342,3 +342,30 @@ distinct
 SELECT NAME,math english,math+IFNULL(english,0) AS 总分 FROM student;
 ```
 
+## 条件查询
+
+### where子句后跟条件
+
+### 运算符
+
+```mysql
+> 、 < 、 <= 、 >= 、 = 、<> :<>在SQL中表示不等于，在MYSQL中可以写!=
+and 或者 && ：与，SQL中建议用and，后者不通用
+or 或者 || ：或
+not 或 ! ：非
+SELECT * FROM student WHERE age>=20 AND age<=30;
+
+BETWEEN......AND：在一个范围内，如 between 100 and 200，相当于条件在100到200之间，包头又包尾
+SELECT * FROM student WHERE age BETWEEN 20 AND 30;
+
+IN(集合) ：集合表示多个值，使用逗号分隔
+SELECT * FROM student WHERE age IN(22,18,25);
+
+IS NULL：(查询某一列为NULL的值)，不能写=NULL
+SELECT * FROM student WHERE english IS NULL; 
+SELECT * FROM student WHERE english IS NOT NULL;
+
+LIKE'张%' ：模糊查询
+
+```
+
