@@ -8,7 +8,6 @@ sidebar_label: 'JavaWeb-MySQL'
 - 这是一个在JavaWeb过程中的MySQL，从0到1的学习笔记。
   - 因此，这篇Notes更适合在学习JavaWeb的过程中进行阅读
   - 更加全面的MySQL文章会在**"数据管理"**大纲下进行发布，因此这份MarkDown命名为JavaWeb-MySQL
-
 - 内容主要为Base of MySQL
   - 概括为简单的CRUD基本操作
 - It's more suitable for understanding in learning
@@ -16,6 +15,14 @@ sidebar_label: 'JavaWeb-MySQL'
     - 当然，要当字典用也没事，看的懂并且理解最重要，看不懂我也没办法。
 - 更权威的内容在 [这里](https://dev.mysql.com/doc/)，如果您觉得这篇markdown很弱智的话
 - 如果有些问题通过Ctrl+F是解决不了的，[这里](https://www.google.com)一定有正确的解决方案
+
+# 本文包含以下元素
+
+- DataBase基本概念
+- SQL基本概念
+- DDL：操作数据库、表
+- DML：增删改表中的数据
+- DQL：基础查询、条件查询、查询语句
 
 ## 数据库
 
@@ -31,14 +38,14 @@ sidebar_label: 'JavaWeb-MySQL'
 - 2.方便存储和管理数据
 - 3.使用统一的方式操作数据库------SQL
 
-## MySQL数据目录
+### MySQL数据目录
 
 - 几个概念
   - 数据库：文件夹
   - 表：文件
   - 数据：数据
 
-## MySQL登录
+### MySQL登录
 
 ```sql
 1. mysql -uroot -p密码
@@ -48,7 +55,7 @@ sidebar_label: 'JavaWeb-MySQL'
 
 
 
-## MYSQL退出
+### MYSQL退出
 
 ```sql
 1. exit
@@ -57,9 +64,9 @@ sidebar_label: 'JavaWeb-MySQL'
 
 
 
-# SQL
+## SQL
 
-## SQL概念
+### SQL概念
 
 Structred Query Language：结构化查询语言
 
@@ -67,7 +74,7 @@ Structred Query Language：结构化查询语言
 
 每一种数据库操作的方式存在不一样的地方，称为“方言”
 
-## SQL通用语法
+### SQL通用语法
 
 1.SQL语句可以单行或者多行进行书写，以分号结尾。
 
@@ -86,7 +93,7 @@ Structred Query Language：结构化查询语言
 
 
 
-## SQL分类
+### SQL分类
 
 - DDL（Data Definition Language）数据定义语言
   - 用来定义数据库对象：数据库，表，列等。关键字：create，drop，alter等
@@ -97,9 +104,9 @@ Structred Query Language：结构化查询语言
 - DCL（Data Control Language）数据控制语言
   - 用来定义数据库的访问权限和安全级别，及创建用户。关键字：GRANT，REVOKE等
 
-# DDL：操作数据库、表
+## DDL：操作数据库、表
 
-## 操作数据库：CRUD
+### 操作数据库：CRUD
 
 ​		C（Create）：创建
 
@@ -166,7 +173,7 @@ Structred Query Language：结构化查询语言
 
   
 
-## 操作表：CRUD
+### 操作表：CRUD
 
 - 1.C（Create）：创建
 
@@ -254,9 +261,9 @@ Structred Query Language：结构化查询语言
 
   
 
-# DML：曾删改表中的数据
+## DML：增删改表中的数据
 
-## 添加数据
+### 添加数据
 
 ```sql
 insert into 表名（列名1，列名2，.......列名n） values（值1，值2，......值n）;
@@ -269,7 +276,7 @@ insert into 表名（列名1，列名2，.......列名n） values（值1，值2�
     - insert into 表名 values（值1，值2，......值n）；
   - 3.除了数字类型，其它类型需要用（单引双引都可以）引起来；
 
-## 删除数据
+### 删除数据
 
 - 删除：
 
@@ -287,7 +294,7 @@ delete from student where id=1;
   2.TRUNCATE TABLE 表名; #先删除表，再创建一张一样的表
   ```
 
-## 修改数据
+### 修改数据
 
 1. 语法：
 
@@ -298,9 +305,9 @@ update 表名 set age = 17 where id=1;
 
 注意：如果不加条件，则会将表中所有数据修改
 
-# DQL：查询
+## DQL：查询
 
-## 语法
+### 语法
 
 ```sql
 select * from 表名;
@@ -382,9 +389,24 @@ IS NULL：(查询某一列为NULL的值)，不能写=NULL
 SELECT * FROM student WHERE english IS NULL; 
 SELECT * FROM student WHERE english IS NOT NULL;
 
-LIKE'张%' ：模糊查询
-
 ```
+
+```sql
+LIKE'张%' ：模糊查询
+占位符：
+_ 下划线，表示单个任意字符
+% 百分号，表示多个任意字符
+--姓马的有哪些？
+SELECT * FROM student WHERE NAME LIKE '马%';
+--查询第二个字是化的人
+SELECT * FROM student WHERE NAME LIKE '_化%';
+--查询姓名是三个字的人
+SELECT * FROM student WHERE NAME LIKE '___';
+--查询姓名中包含马的人
+SELECT * FROM student WHERE NAME LIKE '%马%';
+```
+
+
 
 ## 查询语句
 
@@ -432,8 +454,6 @@ SELECT MAX(math) FROM student;
 ```
 
 - min：计算最小值
-
-
 
 - sum：求和
 - avg：计算平均值
@@ -501,15 +521,23 @@ SELECT sex , AVG(math),COUNT(id) AS 人数 FROM student WHERE math>70 GROUP BY s
 
 ```
 
-
-
 ### 分页查询
 
-# 约束
+1.语法 ：limit 开始的索引，每页查询的条数；
 
-# 多表之间的关系
+```sql
+limit 开始的索引, 每页查询的条数;
+```
 
-# 范式
+- 公式：开始的索引 = （当前的页码-1）* 每页显示的条数
 
-# 数据库的备份和还原
+```sql
+-- 每页显示3条记录
+SELECT * FROM student LIMIT 0,3;--第一页
+SELECT * FROM student LIMIT 3,3;--第二页
+SELECT * FROM student LIMIT 6,3;--第三页
+-- 公式：开始的索引 = （当前的页码-1）* 每页显示的条数
+```
+
+2.limit是一个方言，MySQL特有的
 
