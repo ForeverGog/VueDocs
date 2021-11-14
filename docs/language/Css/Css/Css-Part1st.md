@@ -185,7 +185,9 @@ body {background-image:url("/images/back40.gif");}
 
 ### 内部样式表
 
+```html
 当单个文档需要特殊的样式时，就应该使用内部样式表。你可以使用 <style> 标签在文档头部定义内部样式表，就像这样:
+```
 
 ```css
 <head>
