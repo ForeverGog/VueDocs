@@ -22,17 +22,12 @@
 
 Yarn官网经常抽风，如果下载页面出现404，直接`win+R`输入`cmd`
 
-```java
-//Windows
-npm install -g yarn
-    
-//MacOS 在Mac上安装比较方便，使用初始化脚本即可
-curl -o- -L https://yarnpkg.com/install.sh | bash
-
-//Linux
-sudo apt-key adv --keyserver pgp.mit.edu --recv D101F7899D41F3C3
-
-echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+```bash
+# Windows 安装
+npm install -g yarn --registry=https://registry.npm.taobao.org
+yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
+# 装完顺便通过检查版本确认安装是否成功，失败就去问Google吧
+yarn --version
 ```
 
 ### 2. 启动
@@ -48,7 +43,7 @@ cd VueDocs
 yarn install # 或npm install 
 
 # 启动
-yarn dev # 或 # npm run dev
+yarn docs:dev # 或 # npm run dev
 
 # 万能的8080
 http://localhost:8080/

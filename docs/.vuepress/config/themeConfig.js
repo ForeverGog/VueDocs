@@ -23,9 +23,9 @@ module.exports = {
   },
   blogger: {
     // 博主信息，显示在首页侧边栏
-    avatar: 'https://raw.githubusercontent.com/AsheOne18/VueDocs/gh-pages/img/xuangou.png',
-    name: 'ID:炫神',
-    slogan: '签名:含金量国服没有含金量',
+    avatar: 'https://raw.githubusercontent.com/AsheOne18/Web-SimpleExample-MusicPlayer/main/img/11.jpg',
+    name: 'Ashe', 
+    slogan: '含金量国服没有含金量',
   },
   social: {
     icons: [
