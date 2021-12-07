@@ -40,6 +40,7 @@ module.exports = [
       { text: 'Maven', link: '/pages/5b9927/' },
     ],
   },
+
   {
     text: '小记',
     link: '/more/',
@@ -51,7 +52,12 @@ module.exports = [
       { text: '朋友圈', link: '/friends/' },
     ],
   },
-  { text: '教程', link: '/about/' },
+
+  { 
+    text: '教程', 
+    link: '/pages/b45ea2/',
+  },
+
   {
     text: '收藏',
     link: '/pages/beb6c0bd8a66cea6/',

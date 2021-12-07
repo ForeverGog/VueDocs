@@ -3,8 +3,8 @@ home: true
 # heroImage: /img/web.png
 heroText: Welcome Home
 tagline: Accumulate steps and even thousands of miles
-# actionText: 立刻进入 →
-# actionLink: /web/
+actionText: 使用教程 →
+actionLink: /pages/b45ea2/
 # bannerBg: auto # auto => 网格纹背景(有bodyBgImg时无背景)，默认 | none => 无 | '大图地址' | background: 自定义背景样式     
 
 features: # 可选的
