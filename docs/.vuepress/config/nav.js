@@ -54,8 +54,7 @@ module.exports = [
   },
 
   { 
-    text: '教程', 
-    link: '/pages/b45ea2/',
+    text: '教程', link: '/pages/b45ea2/',
   },
 
   {
@@ -76,4 +75,5 @@ module.exports = [
       { text: '归档', link: '/archives/' },
     ],
   },
+
 ]
