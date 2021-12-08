@@ -1,31 +1,32 @@
-name: CI
+name: Vuepress Deploy
 
 on:
-  push:
-    branches:
-      - master
-
-env: 
-  TZ: Asia/Shanghai 
+   push:
+      branches:
+         - main
 
 jobs:
-  build: 
-    runs-on: ubuntu-latest 
+   build-and-deploy:
+      runs-on: ubuntu-latest
+      steps:
+         # 使用某个 Repo
+         - name: Checkout 🛎️
+           uses: actions/checkout@v2
 
-    strategy:
-      matrix:
-        node-version: [12.x]
+         # 构建静态文件
+         - name: Install and Build 🔧
+           run: |
+              npm install yarn
+              yarn
+              yarn docs:build
 
-    steps:
-      - name: Checkout 
-        uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }} 
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }} 
-      - name: run deploy.sh 
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} 
-          CODING_TOKEN: ${{ secrets.CODING_TOKEN }}
-        run: npm install && npm run deploy
-
+         # 部署到 GitHub Pages
+         - name: Deploy 🚀
+           uses: peaceiris/actions-gh-pages@v3
+           with:
+              personal_token: ${{ secrets.PERSONAL_TOKEN }}
+              publish_dir: docs/.vuepress/dist
+              external_repository: AsheOne18/VueDocs
+              publish_branch: main
+              user_name: 'github-actions[bot]'
+              user_email: 'github-actions[bot]@users.noreply.github.com'
