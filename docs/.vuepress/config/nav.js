@@ -54,7 +54,12 @@ module.exports = [
   },
 
   { 
-    text: '教程', link: '/pages/b45ea2/',
+    text: '教程', 
+    link: '/turorials/',
+    items: [
+      { text: '快速上手', link: '/pages/b45ea2/'},
+      { text: '使用细节', link: '/pages/a6f543/'}
+    ],
   },
 
   {
