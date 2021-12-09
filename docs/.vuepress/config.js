@@ -17,4 +17,17 @@ module.exports = {
   head,
   plugins,
   themeConfig,
+
+
+
+  plugins: [
+      [
+         'cursor-effects',
+         {
+            size: 2, // 粒子大小
+            shape: 'star', // 粒子形状（可选 'star' 和 'circle'）
+            zIndex: 999999999,
+         },
+      ],
+   ],
 }
