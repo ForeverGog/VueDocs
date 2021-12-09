@@ -45,7 +45,7 @@ module.exports = [
     text: '小记',
     link: '/more/',
     items: [
-      { text: 'FBI读心术', link: '/pages/f2a556/' },
+      { text: '一些实用小技巧', link: '/pages/0b37ee/' },
       { text: '996公司黑名单', link: '/pages/aea6571b7a8bae86/' },
       { text: '好玩的项目', link: '/pages/2d615df9a36a98ed/' },
       { text: '让她三天喜欢上你', link: '/pages/baaa02/' },
